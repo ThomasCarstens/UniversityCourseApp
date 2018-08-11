@@ -1,39 +1,27 @@
 {
   "project_info": {
-    "project_number": "197049247480",
-    "firebase_url": "https://feedlyapp-9df9a.firebaseio.com",
-    "project_id": "feedlyapp-9df9a",
-    "storage_bucket": "feedlyapp-9df9a.appspot.com"
+    "project_number": "412208839835",
+    "firebase_url": "https://myapp-93470.firebaseio.com",
+    "project_id": "myapp-93470",
+    "storage_bucket": "myapp-93470.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:197049247480:android:e3fc01e7c2026042",
+        "mobilesdk_app_id": "1:412208839835:android:38b33d55f1e958fc",
         "android_client_info": {
-          "package_name": "com.samarth.feedly"
+          "package_name": "com.angularfirebase.dynamicsapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "197049247480-bvukna7n25onr6ua9i6btss7ul28l1fu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.samarth.feedly",
-            "certificate_hash": "2dc06eb9e644b92694635b2348a6a576fedca1cd"
-          }
-        },
-        {
-          "client_id": "197049247480-1p3d172acr19rbht1g3q06uos6mmva8g.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "197049247480-1p3d172acr19rbht1g3q06uos6mmva8g.apps.googleusercontent.com",
+          "client_id": "412208839835-g6bjlkhlmuu4gr3mqd7o8u2c1cq9ehhl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC16T8soYwFgd4ZxWpeeH-yKNaFyyeX9cU"
+          "current_key": "AIzaSyAZ-ySgQVZ1E4cqed8C4RestGdTy73zKzQ"
         }
       ],
       "services": {
@@ -41,13 +29,39 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "197049247480-1p3d172acr19rbht1g3q06uos6mmva8g.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412208839835:android:12eabe2529e1e258",
+        "android_client_info": {
+          "package_name": "com.angularfirebase.feedlyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412208839835-g6bjlkhlmuu4gr3mqd7o8u2c1cq9ehhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ-ySgQVZ1E4cqed8C4RestGdTy73zKzQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

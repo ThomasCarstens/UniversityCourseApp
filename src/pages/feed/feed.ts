@@ -20,6 +20,7 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string;
+  Studenttype: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController, private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase) {
     this.getPosts();
@@ -33,6 +34,19 @@ export class FeedPage {
       console.log(err)
     })
 
+    firebase.firestore().collection("users").where('name', '==', firebase.auth().currentUser.displayName)
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc){
+          console.log(doc.data());//works. now get the relevant devices into this array, and take it from the array. post() gives notification(.., "post")
+        });
+
+      //    this.Studenttype= res.studenttype;
+      //console.log(this.Studenttype);
+
+    }).catch((err) => {
+      console.log(err)
+    })
 
   }
 
@@ -53,6 +67,7 @@ export class FeedPage {
   }
 
   getPosts() {
+
 
     this.posts = [];
 
@@ -171,6 +186,7 @@ export class FeedPage {
       console.log(err)
     })
 
+
   }
 
   ago(time) {
@@ -282,8 +298,8 @@ export class FeedPage {
     });
 
     toast.present();
-
-    this.http.post("https://us-central1-feedlyapp-9df9a.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
+//https://us-central1-myapp-93470.cloudfunctions.net/updateLikesCount
+    this.http.post("https://us-central1-myapp-93470.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
       responseType: "text"
     }).subscribe((data) => {
       console.log(data)
@@ -318,12 +334,12 @@ export class FeedPage {
         {
           text: "New Comment",
           handler: () => {
-            
+
             this.alertCtrl.create({
               title: "New Comment",
               message: "Type your comment",
               inputs: [
-                { 
+                {
                   name: "comment",
                   type: "text"
                 }
@@ -335,7 +351,7 @@ export class FeedPage {
                 {
                   text: "Post",
                   handler: (data) => {
-                    
+
                     if(data.comment){
 
                       firebase.firestore().collection("comments").add({

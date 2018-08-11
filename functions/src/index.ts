@@ -8,7 +8,7 @@ const sendNotification = (owner_uid, type) => {
     return new Promise((resolve, reject) => {
         return admin.firestore().collection("users").doc(owner_uid).get().then((doc) => {
             if(doc.exists && doc.data().token){
-                
+
                 if(type === "new_comment"){
                     admin.messaging().sendToDevice(doc.data().token, {
                         data: {
@@ -34,12 +34,12 @@ const sendNotification = (owner_uid, type) => {
                         reject(err)
                     });
                 }
-    
+
             }
         })
     })
 
-    
+
 
 
 }

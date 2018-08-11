@@ -12,6 +12,7 @@ export class SignupPage {
   name: string = "";
   email: string = "";
   password: string = "";
+  usertype: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public alertCtrl: AlertController) {
   }
@@ -19,13 +20,13 @@ export class SignupPage {
   signup(){
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
     .then((data) => {
-      
+
       console.log(data)
 
       let newUser: firebase.User = data.user;
       newUser.updateProfile({
         displayName: this.name,
-        photoURL: ""
+        photoURL: "",
       }).then(() => {
         console.log("Profile Updated")
 
@@ -54,6 +55,20 @@ export class SignupPage {
         duration: 3000
       }).present();
     })
+
+    firebase.firestore().collection("users").add({
+      name: this.name,
+      usertype: "Student",
+      studentnumber: this.email
+    }).then((doc) => {
+      console.log(doc)
+    }).catch((err) => {
+      console.log(err)
+    })
+
+
+
+
   }
 
   goBack(){
