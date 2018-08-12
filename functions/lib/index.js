@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
-const sendNotification = (owner_uid, type) => {
+exports.sendNotifications = (owner_uid, type) => {
     return new Promise((resolve, reject) => {
         return admin.firestore().collection("users").doc(owner_uid).get().then((doc) => {
             if (doc.exists && doc.data().token) {
@@ -64,7 +64,7 @@ exports.updateLikesCount = functions.https.onRequest((request, response) => {
         }
         admin.firestore().collection("posts").doc(postId).update(updateData).then(() => __awaiter(this, void 0, void 0, function* () {
             if (action == "like") {
-                yield sendNotification(data.data().owner, "new_like");
+                yield sendNotifications(data.data().owner, "new_like");
             }
             response.status(200).send("Done");
         })).catch((err) => {
@@ -84,11 +84,25 @@ exports.updateCommentsCount = functions.firestore.document('comments/{commentId}
         yield admin.firestore().collection("posts").doc(postId).update({
             "commentsCount": commentsCount
         });
-        return sendNotification(doc.data().owner, "new_comment");
+        return sendNotifications(doc.data().owner, "new_comment");
         ;
     }
     else {
         return false;
     }
 }));
+//# sourceMappingURL=index.js.map
+
+exports.PostNotif = functions.firestore.document('posts/{postId}').onCreate((event) => __awaiter(this, void 0, void 0, function* () {
+    let data = event.data();
+    let postId = data.post;
+    let doc = yield admin.firestore().collection("posts").doc(postId).get();
+    if (doc.exists) {
+        return sendNotifications(doc.data().owner, "new_post");
+    }
+    else {
+        return false;
+    }
+}));
+
 //# sourceMappingURL=index.js.map

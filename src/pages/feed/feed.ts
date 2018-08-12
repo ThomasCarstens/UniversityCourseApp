@@ -21,8 +21,18 @@ export class FeedPage {
   infiniteEvent: any;
   image: string;
   Studenttype: string;
+  Userdetails: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController, private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private loadingCtrl: LoadingController,
+              private toastCtrl: ToastController,
+              private camera: Camera,
+              private http: HttpClient,
+              private actionSheetCtrl: ActionSheetController,
+              private alertCtrl: AlertController,
+              private modalCtrl: ModalController,
+              private firebaseCordova: Firebase) {
     this.getPosts();
 
     this.firebaseCordova.getToken().then((token) => {
@@ -34,19 +44,20 @@ export class FeedPage {
       console.log(err)
     })
 
-    firebase.firestore().collection("users").where('name', '==', firebase.auth().currentUser.displayName)
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc){
-          console.log(doc.data());//works. now get the relevant devices into this array, and take it from the array. post() gives notification(.., "post")
-        });
 
-      //    this.Studenttype= res.studenttype;
-      //console.log(this.Studenttype);
 
-    }).catch((err) => {
-      console.log(err)
-    })
+  //  firebase.firestore().collection("users").doc(uid)
+  //    .get()
+  //    .then(function(querySnapshot) {
+  //      //querySnapshot.forEach(function(doc){
+  //        console.log(doc.data());
+  //      this.Userdetails.push(querySnapshot);
+
+        //});
+
+  //  }).catch((err) => {
+  //    console.log(err)
+  //  })
 
   }
 
@@ -299,7 +310,7 @@ export class FeedPage {
 
     toast.present();
 //https://us-central1-myapp-93470.cloudfunctions.net/updateLikesCount
-    this.http.post("https://us-central1-myapp-93470.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
+    this.http.post("https://europe-west1-myapp-93470.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
       responseType: "text"
     }).subscribe((data) => {
       console.log(data)

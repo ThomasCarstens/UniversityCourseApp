@@ -67,6 +67,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412208839835:android:92c7159021ce843a",
+        "android_client_info": {
+          "package_name": "com.collaborativefeedback.dynamicsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412208839835-g6bjlkhlmuu4gr3mqd7o8u2c1cq9ehhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ-ySgQVZ1E4cqed8C4RestGdTy73zKzQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp(functions.config().firebase);
 
-const sendNotification = (owner_uid, type) => {
+exports.sendNotifications = (owner_uid, type) => {
 
     return new Promise((resolve, reject) => {
         return admin.firestore().collection("users").doc(owner_uid).get().then((doc) => {
@@ -35,6 +35,20 @@ const sendNotification = (owner_uid, type) => {
                     });
                 }
 
+              } else if(type === "new_post"){
+                  admin.messaging().sendToDevice(doc.data().token, {
+                      data: {
+                          title: "Someone posted on Feedly.",
+                          sound: "default",
+                          body: "Tap to Check"
+                      }
+                  }).then((sent) => {
+                      resolve(sent)
+                  }).catch((err) => {
+                      reject(err)
+                  });
+              }
+
             }
         })
     })
@@ -44,7 +58,7 @@ const sendNotification = (owner_uid, type) => {
 
 }
 
-export const updateLikesCount = functions.https.onRequest((request, response) => {
+exports.updateLikesCount = functions.https.onRequest((request, response) => {
 
     console.log(request.body);
 
@@ -67,10 +81,11 @@ export const updateLikesCount = functions.https.onRequest((request, response) =>
             updateData[`likes.${userId}`] = false;
         }
 
-        admin.firestore().collection("posts").doc(postId).update(updateData).then(async () => {
+        admin.firestore().collection("posts").doc(postId).update(updateData)
+        .then(async () => {
 
             if(action == "like"){
-                await sendNotification(data.data().owner, "new_like");
+                await sendNotifications(data.data().owner, "new_like");
             }
 
             response.status(200).send("Done")
@@ -84,7 +99,7 @@ export const updateLikesCount = functions.https.onRequest((request, response) =>
 
 })
 
-export const updateCommentsCount = functions.firestore.document('comments/{commentId}').onCreate(async (event) => {
+exports.updateCommentsCount = functions.firestore.document('comments/{commentId}').onCreate(async (event) => {
     let data = event.data();
 
     let postId = data.post;
@@ -99,9 +114,21 @@ export const updateCommentsCount = functions.firestore.document('comments/{comme
             "commentsCount": commentsCount
         })
 
-        return sendNotification(doc.data().owner, "new_comment");;
+        return sendNotifications(doc.data().owner, "new_comment");;
 
     } else {
         return false;
     }
 })
+
+exports.PostNotif = functions.firestore.document('posts/{postId}').onCreate((event) => __awaiter(this, void 0, void 0, function* () {
+    let data = event.data();
+    let postId = data.post;
+    let doc = yield admin.firestore().collection("posts").doc(postId).get();
+    if (doc.exists) {
+        return sendNotifications(doc.data().owner, "new_post");
+    }
+    else {
+        return false;
+    }
+}));

@@ -1,0 +1,18 @@
+{
+  "indexes": [
+    {
+      "collectionId": "comments",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "post",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "mode": "ASCENDING"
+        }
+      ]
+    }
+  ]
+}

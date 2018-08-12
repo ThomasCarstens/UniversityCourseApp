@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "feedlyapp-9df9a",
-    "Thomax": "myapp-93470"
+    "default": "myapp-93470"
   }
 }
