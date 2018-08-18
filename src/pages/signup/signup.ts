@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { FeedPage } from '../feed/feed';
+//import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'page-signup',
@@ -14,19 +15,23 @@ export class SignupPage {
   password: string = "";
   usertype: string = "";
 
-  constructor(public navCtrl: NavController,
+  constructor(
+              public navCtrl: NavController,
               public navParams: NavParams,
               public toastCtrl: ToastController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              //public userservice: UserProvider,
+          ) {
   }
 
   signup(){
+
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
     .then((data) => {
 
       console.log(data)
 
-      firebase.firestore().collection("users").add({
+      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
         name: this.name,
         usertype: "Student",
         studentnumber: this.email
@@ -39,6 +44,7 @@ export class SignupPage {
       })
 
       let newUser: firebase.User = data.user;
+      //this.userservice.adduser(newUser);
       newUser.updateProfile({
         displayName: this.name,
         photoURL: "",
@@ -73,6 +79,8 @@ export class SignupPage {
     })
 
   }
+
+/////////////////////
 
   goBack(){
     this.navCtrl.pop();

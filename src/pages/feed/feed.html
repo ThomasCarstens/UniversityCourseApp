@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="danger" *ngIf = 'this.StudentType == "Student"' >
+  <ion-navbar color="danger" >
     <ion-title>Your Feed</ion-title>
     <ion-buttons end>
       <button ion-button icon-only clear (click)="logout()">
@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content *ngIf='this.StudentType == "Tutor"'>
 
   <ion-row margin class="rowStyle">
     <button ion-button icon-only color="danger" clear (click)="addPhoto()">
@@ -46,7 +46,7 @@
   <ion-card *ngFor="let post of posts">
 
     <ion-item-divider color="danger">
-      {{ post.data().owner_name }}
+      {{ post.data().owner_name }} {{ user[0] }}
     </ion-item-divider>
 
     <ion-item text-wrap>

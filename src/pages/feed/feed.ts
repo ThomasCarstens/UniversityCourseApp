@@ -7,6 +7,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import { CommentsPage } from '../comments/comments';
 import { Firebase } from '@ionic-native/firebase';
+
+//import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
 
 @Component({
@@ -21,7 +23,7 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string;
-  //StudentType:string;
+  StudentType:string;
   user: any[] = [];
 
   constructor(public navCtrl: NavController,
@@ -55,8 +57,9 @@ export class FeedPage {
       console.log(err)
     })
 
-  //  this.userservice.getuserdetails().then((res: any) => {
-  //    this.StudentType= res.Type;
+//    this.userservice.getuserdetails().then((res: any) => {
+//      this.StudentType= res.Type;
+//    })
   }
 ////////////////////////////FUNCTIONS///////////////////////////
 
@@ -80,18 +83,15 @@ export class FeedPage {
   getPosts() {
 
     this.user = [];
-          firebase.firestore().collection("users").where("name", "==", firebase.auth().currentUser.displayName).get()
-            .then((docs) => {
 
-              docs.forEach((doc) => {
-                this.user.push(doc);
-              })
+    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
-              console.log(this.user)
+        this.StudentType = data.data().usertype || "none";
+        console.log(this.StudentType);
+      })
 
-            }).catch((err) => {
-              console.log(err)
-            })
+//firebase.auth().currentUser.
+
 
   //////////////////////ORIGINAL FUNCTION///////////////////////
 

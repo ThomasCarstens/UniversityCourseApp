@@ -16,6 +16,8 @@ import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
 
 import firebase from 'firebase';
+import { UserProvider } from '../providers/user/user';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 var config = {
   apiKey: "AIzaSyC_FMJcswceJB7ZYlzaRwKW1ij7kn8K6w4",
@@ -56,7 +58,9 @@ firebase.firestore().settings({
     SplashScreen,
     Camera,
     Firebase,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    AngularFireAuth,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    UserProvider
   ]
 })
 export class AppModule {}
