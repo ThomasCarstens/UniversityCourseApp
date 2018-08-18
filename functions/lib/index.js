@@ -11,10 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
-exports.sendNotifications = (owner_uid, type) => {
+
+const sendNotifications = (owner_uid, type) => {
     return new Promise((resolve, reject) => {
-        return admin.firestore().collection("users").doc(owner_uid).get().then((doc) => {
+        return admin.firestore().collection("devices").doc(owner_uid).get().then((doc) => {
             if (doc.exists && doc.data().token) {
+
                 if (type === "new_comment") {
                     admin.messaging().sendToDevice(doc.data().token, {
                         data: {
@@ -40,6 +42,22 @@ exports.sendNotifications = (owner_uid, type) => {
                     }).catch((err) => {
                         reject(err);
                     });
+                }
+
+                else if (type === "new_post") {
+
+                    admin.messaging().sendToDevice('fdNA8tQ_6Js:APA91bHwB4DS-JgEICMh_bb8eBdOaMIOBMF5ahvtrivt_UnGuQrdwf9r0TNbY4KllpkmtSFzaQtVtgb7llYcDrBeJd7nSc4z8lm7JhAvUc8C7kHAon7ufRKHTx4jw8OC-fQFn_DnMckOZQdmK6-fagEGdB2mVsT99A', {
+                        data: {
+                            title: "Someone POSTED!",
+                            sound: "default",
+                            body: "Tap to Check"
+                        }
+                    }).then((sent) => {
+                        resolve(sent);
+                    }).catch((err) => {
+                        reject(err);
+                    });
+
                 }
             }
         });
@@ -95,14 +113,11 @@ exports.updateCommentsCount = functions.firestore.document('comments/{commentId}
 
 exports.PostNotif = functions.firestore.document('posts/{postId}').onCreate((event) => __awaiter(this, void 0, void 0, function* () {
     let data = event.data();
-    let postId = data.post;
-    let doc = yield admin.firestore().collection("posts").doc(postId).get();
-    if (doc.exists) {
-        return sendNotifications(doc.data().owner, "new_post");
-    }
-    else {
-        return false;
-    }
+
+    //notification.
+    sendNotifications(data.owner, "new_post");
+    sendNotifications(data.owner, "new_post");
+
 }));
 
 //# sourceMappingURL=index.js.map

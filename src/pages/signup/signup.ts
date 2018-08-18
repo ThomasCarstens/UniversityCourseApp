@@ -14,7 +14,10 @@ export class SignupPage {
   password: string = "";
   usertype: string = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public toastCtrl: ToastController,
+              public alertCtrl: AlertController) {
   }
 
   signup(){
@@ -23,12 +26,25 @@ export class SignupPage {
 
       console.log(data)
 
+      firebase.firestore().collection("users").add({
+        name: this.name,
+        usertype: "Student",
+        studentnumber: this.email
+      }).then((doc) => {
+        console.log(doc)
+        console.log("this.name in collection:")
+        console.log(this.name)
+      }).catch((err) => {
+        console.log(err)
+      })
+
       let newUser: firebase.User = data.user;
       newUser.updateProfile({
         displayName: this.name,
         photoURL: "",
       }).then(() => {
-        console.log("Profile Updated")
+        console.log("New name on firebase:")
+        console.log(newUser.displayName)
 
         this.alertCtrl.create({
           title: "Account Created",
@@ -55,19 +71,6 @@ export class SignupPage {
         duration: 3000
       }).present();
     })
-
-    firebase.firestore().collection("users").add({
-      name: this.name,
-      usertype: "Student",
-      studentnumber: this.email
-    }).then((doc) => {
-      console.log(doc)
-    }).catch((err) => {
-      console.log(err)
-    })
-
-
-
 
   }
 

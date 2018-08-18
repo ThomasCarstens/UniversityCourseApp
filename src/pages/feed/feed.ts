@@ -6,7 +6,8 @@ import { LoginPage } from '../login/login';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import { CommentsPage } from '../comments/comments';
-import { Firebase } from '@ionic-native/firebase'
+import { Firebase } from '@ionic-native/firebase';
+//import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'page-feed',
@@ -20,8 +21,8 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string;
-  Studenttype: string;
-  Userdetails: any[] = [];
+  //StudentType:string;
+  user: any[] = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -32,8 +33,18 @@ export class FeedPage {
               private actionSheetCtrl: ActionSheetController,
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
-              private firebaseCordova: Firebase) {
+              private firebaseCordova: Firebase,
+              //public userservice: UserProvider,
+            ) {
     this.getPosts();
+    //testing for displayname: the following works
+    //console.log(firebase.auth().currentUser.displayName)
+    var currentuser = firebase.auth().currentUser;
+    if (currentuser!= null) {
+      currentuser.providerData.forEach(function (profile) {
+        console.log('Name:'+profile.displayName)
+      })
+    }
 
     this.firebaseCordova.getToken().then((token) => {
       console.log(token)
@@ -44,29 +55,18 @@ export class FeedPage {
       console.log(err)
     })
 
-
-
-  //  firebase.firestore().collection("users").doc(uid)
-  //    .get()
-  //    .then(function(querySnapshot) {
-  //      //querySnapshot.forEach(function(doc){
-  //        console.log(doc.data());
-  //      this.Userdetails.push(querySnapshot);
-
-        //});
-
-  //  }).catch((err) => {
-  //    console.log(err)
-  //  })
-
+  //  this.userservice.getuserdetails().then((res: any) => {
+  //    this.StudentType= res.Type;
   }
+////////////////////////////FUNCTIONS///////////////////////////
 
 
   updateToken(token: string, uid: string){
 
-    firebase.firestore().collection("users").doc(uid).set({
+    firebase.firestore().collection("devices").doc(uid).set({
       token: token,
       tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
+
     }, {
       merge: true
     }).then(() => {
@@ -79,6 +79,21 @@ export class FeedPage {
 
   getPosts() {
 
+    this.user = [];
+          firebase.firestore().collection("users").where("name", "==", firebase.auth().currentUser.displayName).get()
+            .then((docs) => {
+
+              docs.forEach((doc) => {
+                this.user.push(doc);
+              })
+
+              console.log(this.user)
+
+            }).catch((err) => {
+              console.log(err)
+            })
+
+  //////////////////////ORIGINAL FUNCTION///////////////////////
 
     this.posts = [];
 
@@ -179,6 +194,7 @@ export class FeedPage {
       owner_name: firebase.auth().currentUser.displayName
     }).then(async (doc) => {
       console.log(doc)
+
 
       if (this.image) {
         await this.upload(doc.id)

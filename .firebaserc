@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "myapp-93470"
+    "default": "myapp-93470",
+    "C": "myapp-93470"
   }
 }
