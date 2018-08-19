@@ -24,6 +24,7 @@ export class FeedPage {
   infiniteEvent: any;
   image: string;
   StudentType:string;
+  StudentNumber:string;
   user: any[] = [];
 
   constructor(public navCtrl: NavController,
@@ -57,9 +58,6 @@ export class FeedPage {
       console.log(err)
     })
 
-//    this.userservice.getuserdetails().then((res: any) => {
-//      this.StudentType= res.Type;
-//    })
   }
 ////////////////////////////FUNCTIONS///////////////////////////
 
@@ -87,7 +85,8 @@ export class FeedPage {
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
         this.StudentType = data.data().usertype || "none";
-        console.log(this.StudentType);
+        this.StudentNumber = data.data().studentnumber || "none";
+        console.log(this.StudentNumber);
       })
 
 //firebase.auth().currentUser.
@@ -132,6 +131,7 @@ export class FeedPage {
 
         docs.forEach((doc) => {
           this.posts.push(doc);
+
         })
 
         loading.dismiss();
@@ -191,7 +191,8 @@ export class FeedPage {
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
-      owner_name: firebase.auth().currentUser.displayName
+      owner_name: firebase.auth().currentUser.displayName,
+      owner_email: firebase.auth().currentUser.email
     }).then(async (doc) => {
       console.log(doc)
 
