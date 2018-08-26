@@ -21,6 +21,7 @@
     "@angular/http": "5.2.10",
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
+    "@ionic-native/app-version": "^4.12.0",
     "@ionic-native/camera": "^4.7.0",
     "@ionic-native/core": "4.7.0",
     "@ionic-native/firebase": "^4.11.0",
@@ -31,6 +32,7 @@
     "cordova-android": "7.1.0",
     "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.4",
+    "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-firebase": "^1.0.5",
@@ -63,7 +65,8 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-firebase": {},
-      "cordova-plugin-statusbar": {}
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-app-version": {}
     },
     "platforms": [
       "ios",

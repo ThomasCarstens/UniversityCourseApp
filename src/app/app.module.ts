@@ -19,6 +19,10 @@ import firebase from 'firebase';
 import { UserProvider } from '../providers/user/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { AppVersion } from '@ionic-native/app-version';
+import { UpdaterPage } from '../pages/updater/updater';
+import { PopoverController } from 'ionic-angular';
+
 var config = {
   apiKey: "AIzaSyC_FMJcswceJB7ZYlzaRwKW1ij7kn8K6w4",
   authDomain: "myapp-93470.firebaseapp.com",
@@ -38,7 +42,8 @@ firebase.firestore().settings({
     LoginPage,
     SignupPage,
     FeedPage,
-    CommentsPage
+    CommentsPage,
+    UpdaterPage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,8 @@ firebase.firestore().settings({
     LoginPage,
     SignupPage,
     FeedPage,
-    CommentsPage
+    CommentsPage,
+    UpdaterPage
   ],
   providers: [
     StatusBar,
@@ -59,6 +65,8 @@ firebase.firestore().settings({
     Camera,
     Firebase,
     AngularFireAuth,
+    AppVersion,
+    PopoverController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserProvider
   ]
