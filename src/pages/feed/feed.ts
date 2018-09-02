@@ -125,7 +125,7 @@ export class FeedPage {
         }
       })
     })
-
+    //get from firestore and push each post to posts[] array.
     query.get()
       .then((docs) => {
 
@@ -133,6 +133,7 @@ export class FeedPage {
           this.posts.push(doc);
 
         })
+    //necessary to execute as soon as page loads - see constructor
 
         loading.dismiss();
 

@@ -15,14 +15,78 @@
 
 </ion-header>
 
+<ion-content>
+<img [src]="post.data().image" *ngIf="post.data().image">
 
-<ion-content padding>
+<ion-list>
+  <ion-item *ngFor="let comment of comments">
+    <ion-icon item-left name="ios-chatbubbles-outline"></ion-icon>
+    <h2>
+      <small>{{ comment.data().text }}</small>
+    </h2>
+    <p>
+      <small>
+        {{ comment.data().owner_name }} <i> {{ ago(comment.data().created.toDate()) }} ago </i>
+      </small>
+    </p>
+  </ion-item>
+</ion-list>
+</ion-content>
+
+
+
+<!--
+
+<i> {{ ago(comment.data().created.toDate()) }} ago </i>
+{{chat.sendDate | date:'short'}}
+
+<ion-content>
+<img [src]="post.data().image" *ngIf="post.data().image">
 
   <ion-list>
+    <ion-item *ngFor="let comment of comments" no-lines>
+      <ng-template #message>
+        <div class="chat-message" text-right *ngIf='this.StudentNumber == post.data().owner_email'>
+          <div class="right-bubble">
+            <span class="msg-name">Me</span>
+            <span class="msg-date"><i> {{ ago(comment.data().created.toDate()) }} ago </i></span>
+            <p text-wrap>{{ comment.data().text }}</p>
+          </div>
+        </div>
+        <div class="chat-message" text-left *ngIf='this.StudentNumber !== post.data().owner_email'>
+          <div class="left-bubble">
+            <span class="msg-name">{{ comment.data().owner_name }}</span>
+            <span class="msg-date"><i> {{ ago(comment.data().created.toDate()) }} ago </i></span>
+            <p text-wrap>{{ comment.data().text }}</p>
+          </div>
+        </div>
+      </ng-template>
+    </ion-item>
+  </ion-list>
+</ion-content>
 
+
+SHORTENED VERSION
+<ion-list>
+  <ion-item *ngFor="let comment of comments" no-lines>
+    <ng-template #message>
+
+      <div class="chat-message" text-left >
+        <div class="left-bubble">
+          <span class="msg-name">{{ comment.data().owner_name }}</span>
+          <span class="msg-date"><i> {{ ago(comment.data().created.toDate()) }} ago </i></span>
+          <p text-wrap>{{ comment.data().text }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </ion-item>
+</ion-list>
+</ion-content>
+
+OLD VERSION
+  <ion-list>
     <ion-item *ngFor="let comment of comments">
       <ion-icon item-left name="ios-chatbubbles-outline"></ion-icon>
-
       <h2>
         <small>{{ comment.data().text }}</small>
       </h2>
@@ -31,9 +95,21 @@
           {{ comment.data().owner_name }} <i> {{ ago(comment.data().created.toDate()) }} ago </i>
         </small>
       </p>
-
     </ion-item>
-
   </ion-list>
-
 </ion-content>
+
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10>
+        <ion-input type="text" placeholder="Type a message" [(ngModel)]="data.message" name="message"></ion-input>
+      </ion-col>
+      <ion-col col-2 (click)="sendMessage()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
+-->

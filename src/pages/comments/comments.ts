@@ -11,6 +11,7 @@ export class CommentsPage {
 
   post: any = {};
   comments : any[] = [];
+  StudentNumber : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
 
@@ -27,7 +28,14 @@ export class CommentsPage {
       console.log(err)
     })
 
-  }
+//Current User details
+  firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
+
+      //StudentType: string = data.data().usertype || "none";
+      this.StudentNumber = data.data().studentnumber || "none";
+      console.log(this.StudentNumber); //this works
+  });
+}
 
   close(){
     this.viewCtrl.dismiss();

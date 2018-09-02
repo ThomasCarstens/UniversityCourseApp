@@ -16,6 +16,8 @@ import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
 
 import firebase from 'firebase';
+import { config } from './app.firebaseconfig';
+
 import { UserProvider } from '../providers/user/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -23,14 +25,6 @@ import { AppVersion } from '@ionic-native/app-version';
 import { UpdaterPage } from '../pages/updater/updater';
 import { PopoverController } from 'ionic-angular';
 
-var config = {
-  apiKey: "AIzaSyC_FMJcswceJB7ZYlzaRwKW1ij7kn8K6w4",
-  authDomain: "myapp-93470.firebaseapp.com",
-  databaseURL: "https://myapp-93470.firebaseio.com",
-  projectId: "myapp-93470",
-  storageBucket: "myapp-93470.appspot.com",
-  messagingSenderId: "412208839835"
-};
 firebase.initializeApp(config);
 firebase.firestore().settings({
   timestampsInSnapshots: true
