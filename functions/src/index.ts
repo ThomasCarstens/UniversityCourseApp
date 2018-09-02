@@ -12,7 +12,7 @@ const sendNotification = (owner_uid, type) => {
                 if(type === "new_comment"){
                     admin.messaging().sendToDevice(doc.data().token, {
                         data: {
-                            title: "A new comment has been made on your post.",
+                            title: "A new comment has been made on your post on Dynamics App.",
                             sound: "default",
                             body: "Tap to Check"
                         }
@@ -24,7 +24,7 @@ const sendNotification = (owner_uid, type) => {
                 } else if(type === "new_like"){
                     admin.messaging().sendToDevice(doc.data().token, {
                         data: {
-                            title: "Someone liked your post on Feedly.",
+                            title: "Someone liked your post on Dynamics App.",
                             sound: "default",
                             body: "Tap to Check"
                         }
@@ -38,7 +38,7 @@ const sendNotification = (owner_uid, type) => {
               } else if(type === "new_post"){
                   admin.messaging().sendToDevice(doc.data().token, {
                       data: {
-                          title: "Someone liked your post on Feedly.",
+                          title: "Someone liked your post on Dynamics App.",
                           sound: "default",
                           body: "Tap to Check"
                       }
