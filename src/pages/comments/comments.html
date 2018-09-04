@@ -2,7 +2,7 @@
 
   <ion-navbar color="danger">
     <ion-title>
-      <small>{{ comments.length }} people have commented.</small>
+      <small>{{ comments.length }} comments.</small>
     </ion-title>
 
     <ion-buttons end>
@@ -19,17 +19,27 @@
 <img [src]="post.data().image" *ngIf="post.data().image">
 
 <ion-list>
-  <ion-item *ngFor="let comment of comments">
-    <ion-icon item-left name="ios-chatbubbles-outline"></ion-icon>
-    <h2>
-      <small>{{ comment.data().text }}</small>
-    </h2>
-    <p>
-      <small>
-        {{ comment.data().owner_name }} <i> {{ ago(comment.data().created.toDate()) }} ago </i>
-      </small>
-    </p>
+
+  <ion-item *ngFor="let comment of comments" no-lines>
+
+      <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
+        <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
+          <span class="msg-name">{{ comment.data().owner_name }}</span>
+          <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
+          <p text-wrap>{{ comment.data().text }}</p>
+        </div>
+      </div>
+
+      <div class="chat-message" text-left *ngIf='this.CurrentStudentName == comment.data().owner_name'>
+        <div class="right-bubble" *ngIf='this.CurrentStudentName == comment.data().owner_name'>
+          <span class="msg-name">{{ comment.data().owner_name }}</span>
+          <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
+          <p text-wrap>{{ comment.data().text }}</p>
+        </div>
+      </div>
+
   </ion-item>
+
 </ion-list>
 </ion-content>
 
@@ -88,7 +98,7 @@ OLD VERSION
     <ion-item *ngFor="let comment of comments">
       <ion-icon item-left name="ios-chatbubbles-outline"></ion-icon>
       <h2>
-        <small>{{ comment.data().text }}</small>
+        <small text-wrap>{{ comment.data().text }}</small>
       </h2>
       <p>
         <small>

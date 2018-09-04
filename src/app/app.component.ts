@@ -28,7 +28,7 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      firebase.initializeApp(config);
+      //firebase.initializeApp(config);
 
       firebase.auth().onAuthStateChanged(user => {
         if (user) {

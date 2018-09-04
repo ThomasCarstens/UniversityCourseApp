@@ -45,6 +45,11 @@
 <ng-container *ngFor="let post of posts">
   <ion-card *ngIf='this.StudentType == "Tutor" || this.StudentNumber == post.data().owner_email'>
 
+
+<!--    <button *ngIf ='this.StudentNumber == post.data().owner_email' ion-button color="danger" (click)="deleteQuestion(i)" item-end >
+     Delete </button> -->
+
+
     <ion-item-divider color="danger">
       {{ post.data().owner_name }}
     </ion-item-divider>
@@ -56,12 +61,13 @@
     <img [src]="post.data().image" *ngIf="post.data().image">
 
     <ion-row class="bottom-bar">
+      <!--LIKES REMOVED.
       <ion-col>
         <button ion-button block icon-left clear small color="danger" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} Likes</small>
         </button>
-      </ion-col>
+      </ion-col> -->
       <ion-col>
         <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">
           <ion-icon name="text"></ion-icon>

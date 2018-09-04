@@ -35,10 +35,10 @@ const sendNotification = (owner_uid, type) => {
                     });
                 }
 
-              } else if(type === "new_post"){
-                  admin.messaging().sendToDevice(doc.data().token, {
+              } else (type === "new_post"){
+                  admin.messaging().sendToDevice('cdrge3kaU6o:APA91bF6EpsXjqchW-ub03cxiBTK1DtaX5XxzgPpskJLwjm2oiW7DnZX0USqnb_ZZLOXVpbPoGy1I-4266EBZ4M_rG7ihyCUdl_D7dEOOr1njtvOZuSk3nTc8bBintoJjIfejHxqHsKB', {
                       data: {
-                          title: "Someone liked your post on Dynamics App.",
+                          title: "Someone POSTEDPOSTEDPOSTED.",
                           sound: "default",
                           body: "Tap to Check"
                       }
@@ -111,25 +111,15 @@ export const updateCommentsCount = functions.firestore.document('comments/{comme
             "commentsCount": commentsCount
         })
 
-        return sendNotification(doc.data().owner, "new_comment");;
+        return sendNotification(doc.data().owner, "new_like");
 
     } else {
         return false;
     }
 })
 
-export const PostNotif = functions.firestore.document(`posts`).onCreate(async (event) => {
-    let data = event.data();
+export const PostNotif = functions.firestore.document("posts").onCreate(async (event) => {
 
-    //let postId = data.text;
+        return sendNotification('IdYG3pca6nVNf0LKkF910VTyCYB3', "new_post");
 
-    //let doc = await admin.firestore().collection("posts").doc(postId).get();
-
-    //if(doc.exists){
-
-        return sendNotification(data.owner, "new_post");;
-
-    //} else {
-    //    return false;
-    //}
 })

@@ -46,7 +46,7 @@ const sendNotifications = (owner_uid, type) => {
 
                 else if (type === "new_post") {
 
-                    admin.messaging().sendToDevice('fdNA8tQ_6Js:APA91bHwB4DS-JgEICMh_bb8eBdOaMIOBMF5ahvtrivt_UnGuQrdwf9r0TNbY4KllpkmtSFzaQtVtgb7llYcDrBeJd7nSc4z8lm7JhAvUc8C7kHAon7ufRKHTx4jw8OC-fQFn_DnMckOZQdmK6-fagEGdB2mVsT99A', {
+                    admin.messaging().sendToDevice(doc.data().token, {
                         data: {
                             title: "Someone POSTED!",
                             sound: "default",
@@ -112,12 +112,15 @@ exports.updateCommentsCount = functions.firestore.document('comments/{commentId}
 //# sourceMappingURL=index.js.map
 
 exports.PostNotif = functions.firestore.document('posts/{postId}').onCreate((event) => __awaiter(this, void 0, void 0, function* () {
-    let data = event.data();
-
+  let data = event.data();
+  let postId = data.post;
+  let doc = yield admin.firestore().collection("posts").doc(postId).get();
     //notification.
-    sendNotifications(data.owner, "new_post");
-    sendNotifications(data.owner, "new_post");
-
+     //return sendNotifications(doc.data().owner, "new_post");
+     //sendNotifications('IdYG3pca6nVNf0LKkF910VTyCYB3', "new_post");
+     return sendNotifications('JEaSIqiBYThhin4jLamZiSeNgHt1', "new_post");
+//TrG0MgLYgMQn0RrDpYS4ZFbWmeH3 TOM
+//IdYG3pca6nVNf0LKkF910VTyCYB3 KATH
 }));
 
 //# sourceMappingURL=index.js.map

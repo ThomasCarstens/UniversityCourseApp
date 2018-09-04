@@ -39,24 +39,25 @@ export class FeedPage {
               private firebaseCordova: Firebase,
               //public userservice: UserProvider,
             ) {
-    this.getPosts();
     //testing for displayname: the following works
     //console.log(firebase.auth().currentUser.displayName)
-    var currentuser = firebase.auth().currentUser;
-    if (currentuser!= null) {
-      currentuser.providerData.forEach(function (profile) {
-        console.log('Name:'+profile.displayName)
-      })
-    }
+    //var currentuser = firebase.auth().currentUser;
+    //if (currentuser!= null) {
+    //  currentuser.providerData.forEach(function (profile) {
+    //    console.log('Name:'+profile.displayName)
+    //  })
+    //}
 
-    this.firebaseCordova.getToken().then((token) => {
+    this.firebaseCordova.getToken().then(async (token) => {
       console.log(token)
 
-      this.updateToken(token, firebase.auth().currentUser.uid);
-
+      await this.updateToken(token, firebase.auth().currentUser.uid);
+      console.log(token)
     }).catch((err) => {
       console.log(err)
     })
+
+    this.getPosts();
 
   }
 ////////////////////////////FUNCTIONS///////////////////////////
@@ -64,7 +65,7 @@ export class FeedPage {
 
   updateToken(token: string, uid: string){
 
-    firebase.firestore().collection("devices").doc(uid).set({
+    firebase.firestore().collection("users").doc(uid).set({  //devices to users.
       token: token,
       tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
 
@@ -414,5 +415,30 @@ export class FeedPage {
     }).present();
 
   }
+
+//  deleteQuestion(post: string)
+//  {
+//
+//    firebase.firestore().collection("archive").doc().add({
+//        text: post.data().text,
+//        created: post.data().created,
+//        owner: post.data().owner,
+//        owner_name: post.data().owner_name,
+//        owner_email: post.data().owner_email
+//      }).then(async (doc) => {
+//        console.log(doc)
+//
+//      }).catch((err) => {
+//        console.log(err)
+//      })
+//
+//
+//    firebase.firestore().collection("posts").doc("post").delete().then(function() {
+//      console.log("Deleted");
+//    }).catch(function(error) {
+//      console.error("Error:", error);
+//    })
+//}
+
 
 }

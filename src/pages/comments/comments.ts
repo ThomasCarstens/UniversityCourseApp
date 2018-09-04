@@ -11,7 +11,8 @@ export class CommentsPage {
 
   post: any = {};
   comments : any[] = [];
-  StudentNumber : string;
+  CurrentStudentName : string;
+  commentownername : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
 
@@ -31,10 +32,17 @@ export class CommentsPage {
 //Current User details
   firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
-      //StudentType: string = data.data().usertype || "none";
-      this.StudentNumber = data.data().studentnumber || "none";
-      console.log(this.StudentNumber); //this works
+      this.CurrentStudentName = data.data().studentnumber || "none";
+      console.log(this.CurrentStudentName); //this works
   });
+
+//for each comment: comment details.
+//  firebase.firestore().collection("comments").doc().get().then((data) => {
+//      this.commentownername = data.data().owner_name|| "none";
+//      console.log(this.commentownername);
+//  });
+
+
 }
 
   close(){
