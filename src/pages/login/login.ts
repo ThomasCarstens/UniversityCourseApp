@@ -22,7 +22,7 @@ export class LoginPage {
   email: string = "";
   password: string = "";
   MostRecentVersion:string;
-  CurrentVersion:string="0.0.8"; //to be updated every version (here and updater.ts)
+  CurrentVersion:string="2.0.0"; //to be updated every version (here and updater.ts)
 
   constructor(public navCtrl: NavController,
               private appVersion: AppVersion,
@@ -54,14 +54,14 @@ export class LoginPage {
 
   pushtoupdate(){
     //find required version number from Firestore
-        firebase.firestore().collection("requiredversion").doc("dFlsKyVxn3NZucaxjWJW").get().then((data) => {
+        firebase.firestore().collection("requiredversion").doc("androidversion").get().then(async (data) => {
 
-            this.MostRecentVersion = data.data().versionnumber || "none";
+             this.MostRecentVersion = await data.data().version_nb || "none";
             console.log(this.MostRecentVersion);
             console.log(this.CurrentVersion);
 
             if (this.MostRecentVersion!= null) {
-              if (this.MostRecentVersion === this.CurrentVersion) {
+              if (this.MostRecentVersion == this.CurrentVersion) {
                   console.log('Up to date.');
                   //nothing happens.
               } else { console.log('Update Required.');

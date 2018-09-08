@@ -22,26 +22,31 @@
 
   <ion-item *ngFor="let comment of comments" no-lines>
 
-      <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-        <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-          <span class="msg-name">{{ comment.data().owner_name }}</span>
-          <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
-          <p text-wrap>{{ comment.data().text }}</p>
-        </div>
+    <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
+      <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
+        <span class="msg-name">{{ comment.data().owner_name }}</span>
+        <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
+        <p text-wrap>{{ comment.data().text }}</p>
       </div>
+    </div>
 
-      <div class="chat-message" text-left *ngIf='this.CurrentStudentName == comment.data().owner_name'>
-        <div class="right-bubble" *ngIf='this.CurrentStudentName == comment.data().owner_name'>
-          <span class="msg-name">{{ comment.data().owner_name }}</span>
-          <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
-          <p text-wrap>{{ comment.data().text }}</p>
-        </div>
+    <div class="chat-message" text-left *ngIf='this.CurrentStudentName == comment.data().owner_name'>
+      <div class="right-bubble" *ngIf='this.CurrentStudentName == comment.data().owner_name'>
+        <span class="msg-name">{{ comment.data().owner_name }}</span>
+        <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
+        <p text-wrap>{{ comment.data().text }}</p>
       </div>
-
+    </div>
+    
   </ion-item>
 
 </ion-list>
 </ion-content>
+
+
+
+
+
 
 
 

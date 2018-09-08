@@ -16,9 +16,10 @@ import { AppVersion } from '@ionic-native/app-version';
   selector: 'page-updater',
   templateUrl: 'updater.html',
 })
+
 export class UpdaterPage {
   MostRecentVersion:string;
-  CurrentVersion:string="0.0.8"; //to be updated every version (here and updater.ts)
+  CurrentVersion:string="2.0.0"; //to be updated every version (here and updater.ts)
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
@@ -41,9 +42,9 @@ export class UpdaterPage {
   checkforupdate(){
 
     //find required version number from Firestore
-        firebase.firestore().collection("requiredversion").doc("dFlsKyVxn3NZucaxjWJW").get().then((data) => {
+        firebase.firestore().collection("requiredversion").doc("androidversion").get().then((data) => {
 
-            this.MostRecentVersion = data.data().versionnumber || "none";
+            this.MostRecentVersion = data.data().version_nb || "none";
             console.log(this.MostRecentVersion);
             console.log(this.CurrentVersion);
 
