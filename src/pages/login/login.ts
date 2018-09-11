@@ -54,7 +54,7 @@ export class LoginPage {
 
   pushtoupdate(){
     //find required version number from Firestore
-        firebase.firestore().collection("requiredversion").doc("androidversion").get().then(async (data) => {
+        firebase.firestore().collection("requiredversion").doc("iosversion").get().then(async (data) => {
 
              this.MostRecentVersion = await data.data().version_nb || "none";
             console.log(this.MostRecentVersion);

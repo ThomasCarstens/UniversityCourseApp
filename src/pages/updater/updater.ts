@@ -42,7 +42,7 @@ export class UpdaterPage {
   checkforupdate(){
 
     //find required version number from Firestore
-        firebase.firestore().collection("requiredversion").doc("androidversion").get().then((data) => {
+        firebase.firestore().collection("requiredversion").doc("iosversion").get().then((data) => {
 
             this.MostRecentVersion = data.data().version_nb || "none";
             console.log(this.MostRecentVersion);

@@ -32,7 +32,7 @@ export class CommentsPage {
 //Current User details
   firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
-      this.CurrentStudentName = data.data().studentnumber || "none";
+      this.CurrentStudentName = data.data().name || "none";
       console.log(this.CurrentStudentName); //this works
   });
 
