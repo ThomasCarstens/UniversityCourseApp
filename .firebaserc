@@ -2,6 +2,7 @@
   "projects": {
     "default": "myapp-93470",
     "C": "myapp-93470",
-    "howzit": "myapp-93470"
+    "howzit": "myapp-93470",
+    "key0": "myapp-93470"
   }
 }

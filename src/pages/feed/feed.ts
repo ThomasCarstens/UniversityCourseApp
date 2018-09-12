@@ -238,6 +238,13 @@ export class FeedPage {
 
   }
 
+
+gotoComments() {
+
+
+}
+
+
   addPhoto() {
 
     this.launchCamera();
@@ -351,68 +358,9 @@ export class FeedPage {
 
   comment(post) {
 
-    this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: "View All Comments",
-          handler: () => {
             this.modalCtrl.create(CommentsPage, {
               "post": post
             }).present();
-          }
-        },
-        {
-          text: "New Comment",
-          handler: () => {
-
-            this.alertCtrl.create({
-              title: "New Comment",
-              message: "Type your comment",
-              inputs: [
-                {
-                  name: "comment",
-                  type: "text"
-                }
-              ],
-              buttons: [
-                {
-                  text: "Cancel"
-                },
-                {
-                  text: "Post",
-                  handler: (data) => {
-
-                    if(data.comment){
-
-                      firebase.firestore().collection("comments").add({
-                        text: data.comment,
-                        post: post.id,
-                        owner: firebase.auth().currentUser.uid,
-                        owner_name: firebase.auth().currentUser.displayName,
-                        created: firebase.firestore.FieldValue.serverTimestamp()
-                      }).then((doc) => {
-                        this.toastCtrl.create({
-                          message: "Comment posted successfully.",
-                          duration: 3000
-                        }).present();
-                      }).catch((err) => {
-                        this.toastCtrl.create({
-                          message: err.message,
-                          duration: 3000
-                        }).present();
-                      })
-
-                    }
-
-                  }
-                }
-              ]
-            }).present();
-
-          }
-        }
-      ]
-    }).present();
 
   }
 
