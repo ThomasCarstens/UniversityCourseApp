@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+//import {Inject, ViewChild} from 'angular2/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -11,6 +12,7 @@ import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { FeedPage } from '../pages/feed/feed';
 import { CommentsPage } from '../pages/comments/comments';
+import { CodesignPage } from '../pages/codesign/codesign';
 
 import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
@@ -25,6 +27,8 @@ import { AppVersion } from '@ionic-native/app-version';
 import { UpdaterPage } from '../pages/updater/updater';
 import { PopoverController } from 'ionic-angular';
 
+import { Autosize } from '../components/autosize';
+
 firebase.initializeApp(config);
 firebase.firestore().settings({
   timestampsInSnapshots: true
@@ -37,7 +41,9 @@ firebase.firestore().settings({
     SignupPage,
     FeedPage,
     CommentsPage,
-    UpdaterPage
+    UpdaterPage,
+    CodesignPage,
+    Autosize
   ],
   imports: [
     BrowserModule,
@@ -51,7 +57,8 @@ firebase.firestore().settings({
     SignupPage,
     FeedPage,
     CommentsPage,
-    UpdaterPage
+    UpdaterPage,
+    CodesignPage
   ],
   providers: [
     StatusBar,
@@ -61,6 +68,7 @@ firebase.firestore().settings({
     AngularFireAuth,
     AppVersion,
     PopoverController,
+//    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserProvider
   ]

@@ -18,14 +18,14 @@
 
 <ion-content #content>
 <img [src]="post.data().image" *ngIf="post.data().image">
-
+<p> Your posts are anonymous (to be reviewed)</p>
 <ion-list>
 
   <ion-item *ngFor="let comment of comments" no-lines>
 
     <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
       <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-        <span class="msg-name">{{ comment.data().owner_name }}</span>
+        <span class="msg-name"> Anonymous<!-- {{ comment.data().owner_name }}--> </span>
         <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
         <p text-wrap>{{ comment.data().text }}</p>
         <img [src]="comment.data().image" *ngIf="comment.data().image">
@@ -48,29 +48,30 @@
 </ion-content>
 
 
-
 <ion-footer>
-  <ion-row margin class="rowStyle" *ngIf="image">
+
+  <ion-row margin *ngIf="image">
     <ion-card class="round-corners">
       <img [src]="image" class="round-corners">
     </ion-card>
   </ion-row>
 
+    <ion-row margin class="rowStyle">
+      <button ion-button item-left color="danger" clear (click)="addPhoto()">
+        <ion-icon name="images"></ion-icon>
+      </button>
 
-  <ion-row margin class="rowStyle" position="bottom">
-    <button ion-button icon-left  color="danger" clear (click)="addPhoto()"> <!-- (click)="addPhoto()" -->
-      <ion-icon name="images"></ion-icon>
-    </button>
 
-    <ion-input type="text" placeholder="Say something..." [(ngModel)]="text"></ion-input>
+      <ion-textarea rows="1" name="dummyText"  type="text" placeholder="Say something..." [(ngModel)]="text" autosize></ion-textarea>
 
-    <button ion-button icon-right  color="danger" clear (click)="newcomment()"> <!-- (click)="post()" -->
-      <ion-icon name="send"></ion-icon>
-    </button>
+      <button ion-button icon-right  color="danger" clear (click)="newcomment()">
+        <ion-icon name="send"></ion-icon>
+      </button>
   </ion-row>
+
+
+
 </ion-footer>
-
-
 
 <!--
 

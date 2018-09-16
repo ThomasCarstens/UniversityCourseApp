@@ -1,0 +1,151 @@
+
+<ion-header>
+
+  <ion-navbar color="danger" >
+
+    <!-- IF TABS, later
+    <ion-buttons start>
+      <button start ion-button icon-only clear menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    (click)="submitReturn()"
+  -->
+  <ion-buttons left>
+    <button item-left ion-button icon-only clear type="submit" [disabled]="!f.valid" (click)="submitReturn()">   <!-- (click)="Please finish form()" -->
+      <ion-icon name="bonfire"></ion-icon>
+    </button>
+  </ion-buttons>
+
+    <ion-title>CoDesign</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only clear (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+<!--  <button color="danger" ion-button block round outline style="margin-top: 10px;" type="submit" (click)="submitReturn()">
+    SUBMIT
+  </button>--> <!-- to submit form and return setRoot -->
+
+<!-- <ion-card *ngFor="let User of user">
+<ion-item-divider color="danger" *ngIf="{{ User.data().usertype }} === `Student`">
+    {{ User.data().usertype }}
+</ion-item-divider>
+</ion-card> -->
+
+<form #f="ngForm" (ngSubmit)="submitReturn(f)">
+<ng-container *ngFor="let post of posts">
+  <ion-card>  <!-- DEAL WITH USER PERMISSIONS *ngIf='this.StudentType == "Tutor" || this.StudentNumber == post.data().owner_email' -->
+
+
+<!--    <button *ngIf ='this.StudentNumber == post.data().owner_email' ion-button color="danger" (click)="deleteQuestion(i)" item-end >
+     Delete </button> -->
+
+
+    <ion-item-divider color="danger">
+      Choose one
+    </ion-item-divider>
+
+     <ion-item text-wrap>
+      {{ post.data().text }}
+    </ion-item>
+
+    <img [src]="post.data().image" *ngIf="post.data().image">
+<!--
+<ion-row class="bottom-bar">
+      <ion-col>
+        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="like(post)">
+          <small>{{ post.data().likesCount || 0 }}  </small>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <small text-wrap> A</small>
+        </button>
+      </ion-col>
+
+      <ion-col>
+        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="like(post)">
+          <small>{{ post.data().OptionB || 0 }}  </small>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <small text-wrap> B</small>
+        </button>
+      </ion-col>
+ </ion-row>
+-->
+
+<!--<ion-row class="bottom-bar">
+<ion-item>
+  <ion-label>Choose option</ion-label>
+  <ion-select name="what" type="what" ngModel required>
+    <ion-option value="A">Option A</ion-option>
+    <ion-option value="B">Option B</ion-option>
+    <ion-option value="C">Other</ion-option>
+  </ion-select>
+</ion-item>
+</ion-row>-->
+
+<ion-row class="bottom-bar">
+      <ion-col>
+        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">
+        <!--<button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">-->
+          <ion-icon name="text"></ion-icon>
+          <small>Join the Conversation: <!--{{ post.data().commentsCount || 0 }}--> see comments</small>
+        </button>
+      </ion-col>
+      <!--<ion-col>
+        <button ion-button block icon-left clear small color="danger">
+          <small>{{ ago(post.data().created.toDate()) }} ago</small>
+        </button>
+      </ion-col>-->
+    </ion-row>
+
+  </ion-card>
+
+
+</ng-container>
+
+<ion-row margin class="rowStyle">
+  <button ion-button icon-only color="danger" clear (click)="addPhoto()">
+    <ion-icon name="images"></ion-icon>
+  </button>
+
+  <ion-input type="text" placeholder="Do you like the app?" name="text" [(ngModel)]="text"></ion-input>
+
+  <button ion-button icon-only color="danger" clear (click)="recommend()">
+    <ion-icon name="send"></ion-icon>
+  </button>
+</ion-row>
+</form>
+
+
+
+  <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+
+
+  <ion-row margin class="rowStyle" *ngIf="image">
+    <ion-card class="round-corners">
+      <img [src]="image" class="round-corners">
+    </ion-card>
+  </ion-row>
+
+  <p> <i> Press the bonfire icon to return to main feed. Please do participate in the conversation,
+   help us help you. You can learn more about this initiative in comments</i></p>
+
+</ion-content>

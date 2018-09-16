@@ -1,24 +1,26 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal } from 'ionic-angular';
 import firebase from 'firebase';
 import moment from 'moment';
 import { LoginPage } from '../login/login';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import { CommentsPage } from '../comments/comments';
-import { CodesignPage } from '../codesign/codesign';
+import { FeedPage } from '../feed/feed';
+//import { CodesignPage } from '../codesign/codesign';
 import { Firebase } from '@ionic-native/firebase';
+import { NgForm } from '@angular/forms';
 
 
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
-
+@IonicPage()
 @Component({
-  selector: 'page-feed',
-  templateUrl: 'feed.html',
+  selector: 'page-codesign',
+  templateUrl: 'codesign.html',
 })
-export class FeedPage {
- dummyText: string = `Type a longer text to see how this expands!`;
+export class CodesignPage {
+
   text: string = "";
   posts: any[] = [];
   pageSize: number = 10;
@@ -28,9 +30,8 @@ export class FeedPage {
   StudentType:string;
   StudentNumber:string;
   user: any[] = [];
-  idea: string;
-  latestsurvey: string='2';
-  popuprecord: string;
+  survey: number;
+  latestsurvey: number=1;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -53,6 +54,9 @@ export class FeedPage {
     //  })
     //}
 
+
+    this.HowItWorks();
+
     this.firebaseCordova.getToken().then(async (token) => {
       console.log(token)
 
@@ -62,89 +66,26 @@ export class FeedPage {
       console.log(err)
     })
 
-    //CHECK USER POPUPRECORD vs LATESTSURVEY both on firestore.
-firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then(async(user) => {
-  //await user.data().survey_value;
-  this.popuprecord = user.data().survey_value || "none";
-}).catch(err => {
-  console.log(err);
-})
-
-firebase.firestore().collection("settings").doc("surveys").get().then(async(user) => {
-  //await user.data().survey_value;
-  this.latestsurvey = user.data().latestsurvey || "none";
-}).catch(err => {
-  console.log(err);
-})
-
-this.getPosts();
-
-//timeout for firestore retrieval time.
-setTimeout(() => {
-this.popup();
-}, 3000);
-
-
+    this.getPosts();
 
   }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CodesignPage');
   }
-
 ////////////////////////////FUNCTIONS///////////////////////////
-
-
-//////////////////////////Check if popups are triggered.
-  popup(){
-
-  console.log('Latest Survey:', this.latestsurvey);
-  console.log('Last Survey by', firebase.auth().currentUser.displayName, ':', this.popuprecord);
-
-    if(this.popuprecord !== this.latestsurvey) {
-        this.OnceOffBasicAlert();  //only happens once.
-        //this.popuprecord = this.latestsurvey;  happens in alertcontroller
-      } else {
-//        nothing yet, regular user.
-        console.log('do not ask', firebase.auth().currentUser.displayName, 'twice.')
-      }
-      //SET UP VARIABLE ON STORE
-
-  }
-
-
-
-//this.NewFeatures();
-
+//////////////////////////TO CodesignPage
 gotoCodesign(){
   this.navCtrl.setRoot(CodesignPage);
 }
 
-  askkindly(){
+  HowItWorks(){
 
   let alert = this.alertCtrl.create({
-    title: 'Collaborative Feedback Project',
-    subTitle: 'As part of his project, Thomas is required to hear your opinion on the app- and about the course.',
+    title: 'How it works',
+    subTitle: 'Let us know which option you prefer, in the comments of each post. Press the bonfire icon to return to main feed. ',
     buttons: [{
-    text: 'Codesign',
-    handler: () => {
-      // user has clicked the alert button
-      // begin the alert's dismiss transition
-      let navTransition = alert.dismiss();
-
-      // start some async method
-      this.navCtrl.setRoot(CodesignPage).then(() => {
-        // once the async operation has completed
-        // then run the next nav transition after the
-        // first transition has finished animating out
-
-        navTransition.then(() => {
-          this.navCtrl.pop();
-        });
-      });
-      return false;
-    }
+    text: 'Got it',
   }],
     enableBackdropDismiss: false
   });
@@ -152,40 +93,23 @@ gotoCodesign(){
 
   }
 
-  OnceOffBasicAlert(){
-  let alert = this.alertCtrl.create({
-    title: 'New Features',
-    subTitle: 'VERSION 3.0 - Smooth comment sections - can add pics in comments! Also click the bonfire logo above to contribute to a discussion about the app and ultimately about the course.',
-    inputs: [
-      {
-        type: 'checkbox',
-        label: 'don\'t ask me again',
-        handler:(e)=>{
-          // e.checked is the checkbox value (true or false)
-           console.info('value: ',e.checked)
-//IF TRUE IF FALSE TO BE ADDED.
-           this.popuprecord = this.latestsurvey;
-           console.log('Asked kindly, now Last Survey by', firebase.auth().currentUser.displayName, 'to be set to', this.popuprecord);
-        }
-      }
-    ],
-    buttons: [{
-    text: 'Ok',
-    handler: () => {
+  submitReturn(form: NgForm){
 
-    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
-    survey_value: this.popuprecord,
+    this.navCtrl.setRoot(FeedPage);
+
+    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({  //devices to users.
+      //survey_value: '1',
+      surveytime: firebase.firestore.FieldValue.serverTimestamp()
+
     }, {
-    merge: true
+      merge: true
     }).then(() => {
-    console.log('RESET: Last Survey by', firebase.auth().currentUser.displayName, ':', this.popuprecord);
+      console.log("token saved to cloud firestore");
     }).catch(err => {
-    console.log(err);
-  });
-}
-}] //BUTTON
-}); //ALERTCONTROLLER
-alert.present();
+      console.log(err);
+    })
+
+
   }
 
   updateToken(token: string, uid: string){
@@ -204,18 +128,16 @@ alert.present();
 
   }
 
-
   getPosts() {
 
     this.user = [];
-    console.log(firebase.auth().currentUser.uid);
+
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
         this.StudentType = data.data().usertype || "none";
         this.StudentNumber = data.data().studentnumber || "none";
-        //this.idea=data.data().survey_value || "none";
-
-        //console.log(this.idea);
+        this.survey=data.data().survey1                           //to be updated for SURVEY 2 (also in feed)
+        console.log(this.StudentNumber);
       })
 
 //firebase.auth().currentUser.
@@ -231,7 +153,7 @@ alert.present();
 
     loading.present();
 
-    let query = firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize);
+    let query = firebase.firestore().collection("choices").orderBy("created", "desc").limit(this.pageSize);
 
     query.onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
@@ -277,7 +199,7 @@ alert.present();
 
   loadMorePosts(event) {
 
-    firebase.firestore().collection("posts").orderBy("created", "desc").startAfter(this.cursor).limit(this.pageSize).get()
+    firebase.firestore().collection("choices").orderBy("created", "desc").startAfter(this.cursor).limit(this.pageSize).get()
       .then((docs) => {
 
         docs.forEach((doc) => {
@@ -315,9 +237,9 @@ alert.present();
 
   }
 
-  post() {
+  recommend() {
 
-    firebase.firestore().collection("posts").add({
+    firebase.firestore().collection("recommendations").add({
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
@@ -413,7 +335,7 @@ gotoComments() {
 
       loading.present();
 
-      let ref = firebase.storage().ref("postImages/" + name);
+      let ref = firebase.storage().ref("ChoiceImages/" + name);
 
       let uploadTask = ref.putString(this.image.split(',')[1], "base64");
 
@@ -429,7 +351,7 @@ gotoComments() {
 
         uploadTask.snapshot.ref.getDownloadURL().then((url) => {
 
-          firebase.firestore().collection("posts").doc(name).update({
+          firebase.firestore().collection("choices").doc(name).update({
             image: url
           }).then(() => {
             loading.dismiss()

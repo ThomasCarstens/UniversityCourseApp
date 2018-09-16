@@ -44,6 +44,7 @@
     "firebase": "^5.4.2",
     "firebase-functions": "^2.0.4",
     "ionic-angular": "3.9.2",
+    "ionic2-autosize": "^1.1.2",
     "ionicons": "3.0.0",
     "moment": "^2.22.1",
     "rxjs": "^6.0.0",

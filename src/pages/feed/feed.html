@@ -1,7 +1,22 @@
 <ion-header>
 
   <ion-navbar color="danger" >
+
+    <!-- IF TABS, later
+    <ion-buttons start>
+      <button start ion-button icon-only clear menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  -->
+  <ion-buttons left>
+    <button item-left ion-button icon-only clear (click)="gotoCodesign()">
+      <ion-icon name="bonfire"></ion-icon>
+    </button>
+  </ion-buttons>
+
     <ion-title>Your Feed</ion-title>
+
     <ion-buttons end>
       <button ion-button icon-only clear (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
@@ -10,28 +25,30 @@
 
   </ion-navbar>
 
+
 </ion-header>
 
 
-<ion-content>
 
-  <ion-row margin class="rowStyle">
+<ion-content overflow-scroll=true>
+
+
+<!--<ion-textarea rows="1" id="messageInputBox" placeholder="Send message" (input)="change()" required></ion-textarea>-->
+
+
+<!--
+    <ion-item margin class="rowStyle" justify-content=center>
     <button ion-button icon-only color="danger" clear (click)="addPhoto()">
       <ion-icon name="images"></ion-icon>
     </button>
 
-    <ion-input type="text" placeholder="Say something..." [(ngModel)]="text"></ion-input>
+    <textarea type="text" placeholder="Say something..." [(ngModel)]="text"></textarea>
 
     <button ion-button icon-only color="danger" clear (click)="post()">
       <ion-icon name="send"></ion-icon>
     </button>
-  </ion-row>
-
-  <ion-row margin class="rowStyle" *ngIf="image">
-    <ion-card class="round-corners">
-      <img [src]="image" class="round-corners">
-    </ion-card>
-  </ion-row>
+  </ion-item>
+-->
 
   <ion-refresher (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -43,7 +60,7 @@
 </ion-item-divider>
 </ion-card> -->
 <ng-container *ngFor="let post of posts">
-  <ion-card *ngIf='this.StudentType == "Tutor" || this.StudentNumber == post.data().owner_email'>
+  <ion-card> <!--*ngIf='this.StudentType == "Tutor" || this.StudentNumber == post.data().owner_email'-->
 
 
 <!--    <button *ngIf ='this.StudentNumber == post.data().owner_email' ion-button color="danger" (click)="deleteQuestion(i)" item-end >
@@ -51,7 +68,7 @@
 
 
     <ion-item-divider color="danger">
-      {{ post.data().owner_name }}
+      Anonymous <!--{{ post.data().owner_name }}-->
     </ion-item-divider>
 
     <ion-item text-wrap>
@@ -90,3 +107,27 @@
   </ion-infinite-scroll>
 
 </ion-content>
+
+
+<ion-footer>
+
+  <ion-row margin *ngIf="image">
+    <ion-card class="round-corners">
+      <img [src]="image" class="round-corners">
+    </ion-card>
+  </ion-row>
+
+    <ion-row margin class="rowStyle">
+      <button ion-button item-left color="danger" clear (click)="addPhoto()">
+        <ion-icon name="images"></ion-icon>
+      </button>
+
+
+      <ion-textarea rows="1" name="dummyText"  type="text" placeholder="Say something..." [(ngModel)]="text" autosize></ion-textarea>
+
+      <button ion-button icon-right  color="danger" clear (click)="post()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+  </ion-row>
+
+</ion-footer>

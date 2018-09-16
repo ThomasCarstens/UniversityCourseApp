@@ -1,1 +1,23 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="nav">
+  <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+
+      <button ion-item (click)="GotoCodesign()"> <!-- (click)="onLoad(tabsPage)" -->
+        <ion-icon name="logo-ionitron" item-left>
+        </ion-icon>
+        Co-design
+      </button>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #nav></ion-nav>

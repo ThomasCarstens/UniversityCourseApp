@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+//import {Inject, ViewChild} from 'angular2/core';
 
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { FeedPage } from '../pages/feed/feed';
+import { CodesignPage } from '../pages/codesign/codesign';
 
 import firebase from 'firebase';
 import { config } from './app.firebaseconfig';
@@ -16,11 +18,15 @@ import { config } from './app.firebaseconfig';
 export class MyApp {
   rootPage:any = LoginPage;
   isAuthenticated = false;
+  //aboutPage = AboutPage;
+  //codesignPage = CodesignPage;
   //@ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,
               statusBar: StatusBar,
-              splashScreen: SplashScreen) {
+              splashScreen: SplashScreen,
+              //public navCtrl: NavController,
+            ) {
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -45,4 +51,9 @@ export class MyApp {
 
 
   }
+
+GotoCodesign(){
+  this.rootPage = CodesignPage;
+}
+
 }

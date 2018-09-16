@@ -68,7 +68,7 @@ exports.updateLikesCount = functions.https.onRequest((request, response) => {
     const postId = JSON.parse(request.body).postId;
     const userId = JSON.parse(request.body).userId;
     const action = JSON.parse(request.body).action; // 'like' or 'unlike'
-    admin.firestore().collection("posts").doc(postId).get().then((data) => {
+    admin.firestore().collection("choices").doc(postId).get().then((data) => {
         let likesCount = data.data().likesCount || 0;
         let likes = data.data().likes || [];
         let updateData = {};
@@ -80,14 +80,6 @@ exports.updateLikesCount = functions.https.onRequest((request, response) => {
             updateData["likesCount"] = --likesCount;
             updateData[`likes.${userId}`] = false;
         }
-        admin.firestore().collection("posts").doc(postId).update(updateData).then(() => __awaiter(this, void 0, void 0, function* () {
-            if (action == "like") {
-                yield sendNotifications(data.data().owner, "new_like");
-            }
-            response.status(200).send("Done");
-        })).catch((err) => {
-            response.status(err.code).send(err.message);
-        });
     }).catch((err) => {
         response.status(err.code).send(err.message);
     });

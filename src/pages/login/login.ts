@@ -22,7 +22,7 @@ export class LoginPage {
   email: string = "";
   password: string = "";
   MostRecentVersion:string;
-  CurrentVersion:string="2.0.0"; //to be updated every version (here and updater.ts)
+  CurrentVersion:string; //to be updated every version (here and updater.ts)
 
   constructor(public navCtrl: NavController,
               private appVersion: AppVersion,
@@ -32,46 +32,49 @@ export class LoginPage {
               private loadingCtrl: LoadingController,
 
             ) {
-       this.pushtoupdate();
 
+              //UPDATE IF APP VERSION IS NOT MOST RECENT VERSION
+        //following code finds two variables and compares them
+       firebase.firestore().collection("settings").doc("version").get().then(async(user) => {
+           await user.data().currentversion;
+           this.CurrentVersion = user.data().currentversion || "none"
+         }).catch(err => {
+           console.log(err);
+         })
 
-            if (firebase.auth().currentUser!== null) {
-                this.navCtrl.setRoot(FeedPage)
-             } else {
-                //continue with code.
-             }
+         firebase.firestore().collection("requiredversion").doc("holidayversion").get().then(async (data) => {
 
-  //     firebase.auth().onAuthStateChanged(function(user){
-  //       if (user) {
-  //         this.navCtrl.setRoot(FeedPage)
-  //       } else {
-//
-    //    }
-  //     })
+              this.MostRecentVersion = await data.data().version_nb || "none";
+             console.log(this.MostRecentVersion);
+             console.log(this.CurrentVersion);
+
+           }).catch((err) => {
+             console.log(err)
+           })
+
+           setTimeout(() => {
+                this.pushtoupdate();
+              }, 3000);
+              console.log(this.MostRecentVersion);
+              console.log(this.CurrentVersion);
 
 
   }
 
   pushtoupdate(){
     //find required version number from Firestore
-        firebase.firestore().collection("requiredversion").doc("iosversion").get().then(async (data) => {
+    console.log(this.MostRecentVersion);
+    console.log(this.CurrentVersion);
+    
+          if (this.MostRecentVersion!= null) {
+            if (this.MostRecentVersion == this.CurrentVersion) {
+                console.log('Up to date.');
+                //nothing happens.
+            } else { console.log('Update Required.');
+                this.navCtrl.setRoot(UpdaterPage);
+             }
+         }
 
-             this.MostRecentVersion = await data.data().version_nb || "none";
-            console.log(this.MostRecentVersion);
-            console.log(this.CurrentVersion);
-
-            if (this.MostRecentVersion!= null) {
-              if (this.MostRecentVersion == this.CurrentVersion) {
-                  console.log('Up to date.');
-                  //nothing happens.
-              } else { console.log('Update Required.');
-                  this.navCtrl.setRoot(UpdaterPage);
-               }
-           }
-
-          }).catch((err) => {
-            console.log(err)
-          })
   }
 
   onLogin(form: NgForm) {

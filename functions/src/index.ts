@@ -123,3 +123,27 @@ export const PostNotif = functions.firestore.document("posts").onCreate(async (e
         return sendNotification('IdYG3pca6nVNf0LKkF910VTyCYB3', "new_post");
 
 })
+
+export const updateLikesforCodesign = functions.https.onRequest((request, response) => {
+
+    console.log(request.body);
+
+    const postId = JSON.parse(request.body).postId;
+    const userId = JSON.parse(request.body).userId;
+    const action = JSON.parse(request.body).action; // 'like' or 'unlike'
+    admin.firestore().collection("choices").doc(postId).get().then((data) => {
+
+        let OptionA = data.data().optionA || 0;
+        let OptionB = data.data().optionB || 0;
+        let likes = data.data().likes || [];
+
+        let updateData = {};
+
+        if(action == "A"){
+            updateData["OptionA"] = ++OptionA;
+            updateData["OptionB"] = --OptionB;
+        } else if (action == "B"){
+            updateData["OptionA"] = --OptionA;
+            updateData["OptionB"] = ++OptionB;
+        }
+})
