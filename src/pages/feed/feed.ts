@@ -37,6 +37,8 @@ export class FeedPage {
   post_lurk: number;
   askpost_lurkers: string;
   please_resolve: number;
+  student_must_contribute: number;
+  force_contribute: number;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -66,22 +68,51 @@ this.getPosts();
 
 //timeout for firestore retrieval time.
 
-firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
+firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then(async (data) => {
     this.username = data.data().name || "none";
     this.usertype = data.data().usertype || "none";
+    firebase.firestore().collection("settings").doc("feedback").get().then((data) => {
+        this.askpost_lurkers = data.data().askpost_lurkers || "none";
+        this.force_contribute = data.data().force_contribute || 0;
+    }).catch(err => {
+      console.log(err);
+    })
 }).catch(err => {
   console.log(err);
 })
 
-firebase.firestore().collection("settings").doc("feedback").get().then((data) => {
-    this.askpost_lurkers = data.data().askpost_lurkers || "none";
-}).catch(err => {
-  console.log(err);
-})
+//firebase.firestore().collection("settings").doc("feedback").get().then((data) => {
+//    this.askpost_lurkers = data.data().askpost_lurkers || "none";
+//    //this.force_contribute = data.data().force_contribute || 0;
+//}).catch(err => {
+//  console.log(err);
+//})
 
 
-//setting up doc if it does not exist.
+  setTimeout(() => {
+this.SetupOrConfigureFeedbackDoc();
 
+  setTimeout(() => {
+    console.log('Current user is', this.username);
+    console.log('Current usertype is', this.usertype);
+    console.log('Current feedback setting is', this.askpost_lurkers, '(true/false)');
+    console.log('Current FeedLurk is', this.feed_lurk);
+    console.log('Current PostLurk is', this.post_lurk);
+    console.log('Current ForceContribute is', this.force_contribute, '(true/false)');
+    console.log('Current Student Contribution is', this.student_must_contribute, '(true/false)');
+  this.CheckNumberVisits();
+}, 3000);
+}, 3000);
+  }
+
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad CodesignPage');
+  }
+
+////////////////////////////FUNCTIONS///////////////////////////
+SetupOrConfigureFeedbackDoc(){
+  //setting up doc if it does not exist.
 firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).get().then((docSnapshot) => {
   if (docSnapshot.exists) {
     console.log('exists');
@@ -89,6 +120,7 @@ firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid)
       this.feed_lurk = data.data().feed_lurk;
       this.post_lurk = data.data().post_lurk;
       this.please_resolve = data.data().please_resolve;
+      this.student_must_contribute= data.data().student_must_contribute;
     }).catch(err => {
       console.log(err);
     })
@@ -100,50 +132,50 @@ firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid)
       feed_lurk : 0,
       post_lurk : 0,
       please_resolve : 0,
+      username : this.username,
+      usertype : this.usertype,
+      student_must_contribute: 0,
   }).then((data) => {
         console.log("New feedback uid doc on firestore.");
         this.feed_lurk = 0;
         this.post_lurk = 0;
         this.please_resolve = 0;
+        this.student_must_contribute = 0;
     }).catch(err => {
       console.log(err);
     })
 
 }
 });
-
-if (1){
-
-} else {
-
-  //firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
-  //    feed_lurk: this.feed_lurk,
-  //}, {
-  //  merge: true
-  //}
 }
+/* firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+    student_must_contribute: this.student_must_contribute,
+}, {
+  merge: true
+}).then(() => {
+  console.log("New feed_lurk on firestore.");
+}).catch(err => {
+  console.log(err);
+})
+firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).get().then((data) => {
+  this.student_must_contribute= data.data().student_must_contribute;
+  if (this.force_contribute==1){
+    if (this.student_must_contribute==0){
+      this.popup.ForceContribute();
+      this.student_must_contribute=1;
+    }}
+}).catch(err => {
+  console.log(err);
+}) */
 
-setTimeout(() => {
-console.log('Current user is', this.username);
-console.log('Current usertype is', this.usertype);
-console.log('Current feedback setting is', this.askpost_lurkers, '(true/false)');
-console.log('Current FeedLurk is', this.feed_lurk);
-console.log('Current PostLurk is', this.post_lurk);
-this.CheckNumberVisits();
-}, 3000);
-
-  }
-
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CodesignPage');
-  }
-
-
-////////////////////////////FUNCTIONS///////////////////////////
 CheckNumberVisits(){
-  if (this.askpost_lurkers="1"){
 
+  if (this.force_contribute==1){
+    if (this.student_must_contribute==0){
+      this.popup.ForceContribute();  
+    }}
+
+  else if (this.askpost_lurkers=="1"){
     if (this.please_resolve==1){
     this.popup.PleaseResolve();
     this.please_resolve++

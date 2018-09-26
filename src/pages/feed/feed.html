@@ -10,18 +10,19 @@
     </ion-buttons>
   -->
   <ion-buttons left>
-    <button item-left ion-button icon-only clear (click)="this.popup.HowtoContribute()">
-      <ion-icon name="beer"></ion-icon>
+    <button ion-button icon-only clear (click)="logout()">
+      <ion-icon name="log-out"></ion-icon>
     </button>
   </ion-buttons>
 
     <ion-title>Your Feed</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only clear (click)="logout()">
-        <ion-icon name="log-out"></ion-icon>
+      <button item-left ion-button icon-only clear (click)="this.popup.HowtoContribute()">
+        <ion-icon name="beer"></ion-icon>
       </button>
     </ion-buttons>
+
 
   </ion-navbar>
 </ion-header>

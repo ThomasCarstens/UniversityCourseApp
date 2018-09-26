@@ -33,27 +33,38 @@
 
   <ion-item *ngFor="let comment of comments" no-lines>
 
-     <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-          <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-            <span class="msg-name" *ngIf='comment.data().usertype == "Tutor"'> {{ comment.data().owner_name }} - Tutor </span>
-            <span class="msg-name" *ngIf='comment.data().usertype !== "Tutor"'> {{ comment.data().owner_name }} - Student </span>
+<!-- if posting student: NOT my post (CAN BE tutor), but SAME NAME AS posting student -->
+     <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name && comment.data().owner_name == post.data().owner_name'>
+          <div class="left-bubble-postingstudent">
+            <span class="msg-name" *ngIf='comment.data().usertype == "Tutor"'> {{ comment.data().owner_name }} - Tutor who posted </span>
+            <span class="msg-name" *ngIf='comment.data().usertype !== "Tutor"'> Student who posted </span>
             <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
             <p text-wrap>{{ comment.data().text }}</p>
             <img [src]="comment.data().image" *ngIf="comment.data().image">
           </div>
         </div>
-<!--    <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-      <div class="left-bubble" *ngIf='this.CurrentStudentName !== comment.data().owner_name'>
-        <span class="msg-name" *ngIf='comment.data().usertype == "Tutor"'> {{ comment.data().owner_name }} <i>Tutor</i> </span>
-        <span class="msg-name" *ngIf='comment.data().usertype !== "Tutor"'> <i>Student</i> </span>
+<!-- if other student: NOT my post and NOT tutor and NOT NAME of poster  -->
+    <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name && comment.data().owner_name !== post.data().owner_name && comment.data().usertype !== "Tutor"'>
+      <div class="left-bubble-otherstudent">
+        <span class="msg-name"> Helpful Student </span>
         <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
         <p text-wrap>{{ comment.data().text }}</p>
         <img [src]="comment.data().image" *ngIf="comment.data().image">
       </div>
-    </div>-->
+    </div>
+  <!-- if tutor: NOT my post and NOT poster but IS tutor  -->
+      <div class="chat-message" text-left *ngIf='this.CurrentStudentName !== comment.data().owner_name && comment.data().owner_name !== post.data().owner_name && comment.data().usertype == "Tutor"'>
+        <div class="left-bubble-tutor">
+          <span class="msg-name"> {{ comment.data().owner_name }} - Tutor </span>
+          <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
+          <p text-wrap>{{ comment.data().text }}</p>
+          <img [src]="comment.data().image" *ngIf="comment.data().image">
+        </div>
+      </div>
 
+<!-- if me: MY post -->
     <div class="chat-message" text-left *ngIf='this.CurrentStudentName == comment.data().owner_name'>
-      <div class="right-bubble" *ngIf='this.CurrentStudentName == comment.data().owner_name'>
+      <div class="right-bubble">
         <span class="msg-name"> Me </span>
         <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
         <p text-wrap>{{ comment.data().text }}</p>

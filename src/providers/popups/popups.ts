@@ -38,6 +38,7 @@ export class PopupsProvider {
   comment_lurk: number;
   contributecount: number;
   question_type: number;
+  student_must_contribute: number;
 
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
@@ -802,9 +803,8 @@ PrepareFeedback(){
   let alert = this.alertCtrl.create({
     title: 'I need to ask you a quick question about your experience.',
     subTitle: `
-    <p> It will take a maximum of 30 seconds.</p>
-    <p> To stop receiving these popups, do the full survey (maximum 10 minutes).</p>
-    <p> Press the BEER icon for the full survey.</p>
+    <p> It will take maximum 30 seconds.</p>
+    <p> Do the BEER icon survey to stop receiving these popups.</p>
     <p> Your recommendations help customise the app for your learning.</p>
   `,
     buttons: [
@@ -1103,8 +1103,9 @@ alert.present();
 
   HowtoContribute(){
     let alert = this.alertCtrl.create({
-      title: 'Click Start to start contributing.',
+      title: 'The 5min Survey',
       subTitle:`
+      <p> There are 7 questions.</p>
       <p> In this way, you will not be bothered again by popups until the next update.</p>
       <p> Only your last submission will be recorded.</p>
       <ul> <li> You might already have filled some of these in. Please do so again. </li></ul>
@@ -1142,6 +1143,43 @@ alert.present();
     });
     alert.present();
   }
+
+  ForceContribute(){
+      let alert = this.alertCtrl.create({
+        title: 'The 5min Survey',
+        subTitle:`
+        <p> There are 7 questions.</p>
+        <p> Your opinion helps customise the app for everyone's benefit.</p>
+        `,
+        buttons: [
+
+          {
+            text: 'Start',
+            handler: offhand => {
+              this.AboutAnonymity();
+              this.flowinone = 1
+              this.contributecount++
+              this.student_must_contribute=1;
+              firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+                contributecount: this.contributecount,
+                student_must_contribute: this.student_must_contribute,
+              }, {
+              merge: true
+              }).then((doc) => {
+                console.log(doc)
+              }).catch((err) => {
+                console.log(err)
+              })
+              console.log('flow at start:', this.flowinone)
+              }
+            },
+
+        ],
+        enableBackdropDismiss: false
+      });
+      alert.present();
+    }
+
 /*
   ForcetoCodesign(){
 //    setTimeout(() => {
