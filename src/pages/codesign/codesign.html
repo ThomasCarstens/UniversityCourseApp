@@ -1,7 +1,7 @@
 
 <ion-header>
 
-  <ion-navbar color="danger" >
+  <ion-navbar color="danger" hideBackButton="true" >
 
     <!-- IF TABS, later
     <ion-buttons start>
@@ -13,8 +13,8 @@
     (click)="submitReturn()"
   -->
   <ion-buttons left>
-    <button item-left ion-button icon-only clear type="submit" [disabled]="!f.valid" (click)="submitReturn()">   <!-- (click)="Please finish form()" -->
-      <ion-icon name="bonfire"></ion-icon>
+    <button item-left ion-button icon-only clear type="submit" [disabled]="!f.valid" (click)="submitReturn()">
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
   </ion-buttons>
 
@@ -32,6 +32,7 @@
 
 
 <ion-content>
+
 
   <ion-refresher (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -57,11 +58,11 @@
      Delete </button> -->
 
 
-    <ion-item-divider color="danger">
+<!--    <ion-item-divider color="danger">
       Choose one
-    </ion-item-divider>
+    </ion-item-divider> -->
 
-     <ion-item text-wrap>
+     <ion-item text-wrap color=#cec6c6>
       {{ post.data().text }}
     </ion-item>
 
@@ -99,7 +100,7 @@
 
 <ion-row class="bottom-bar">
       <ion-col>
-        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">
+        <button ion-button block icon-left color="light" clear small class="border-right" (click)="comment(post)">
         <!--<button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">-->
           <ion-icon name="text"></ion-icon>
           <small>Join the Conversation: <!--{{ post.data().commentsCount || 0 }}--> see comments</small>
@@ -117,17 +118,7 @@
 
 </ng-container>
 
-<ion-row margin class="rowStyle">
-  <button ion-button icon-only color="danger" clear (click)="addPhoto()">
-    <ion-icon name="images"></ion-icon>
-  </button>
 
-  <ion-input type="text" placeholder="Do you like the app?" name="text" [(ngModel)]="text"></ion-input>
-
-  <button ion-button icon-only color="danger" clear (click)="recommend()">
-    <ion-icon name="send"></ion-icon>
-  </button>
-</ion-row>
 </form>
 
 
@@ -145,7 +136,26 @@
     </ion-card>
   </ion-row>
 
-  <p> <i> Press the bonfire icon to return to main feed. Please do participate in the conversation,
-   help us help you. You can learn more about this initiative in comments</i></p>
+<!--  <p> <i> Feel free to participate in the conversation, to help us help you.</i></p> -->
 
 </ion-content>
+
+<ion-footer>
+
+  <div class="wrapper">
+  <button ion-button color="danger" (click)="this.popup.HowtoContribute()" text-align="center">
+    Full survey</button>
+  </div>
+
+  <ion-row margin class="rowStyle">
+    <button ion-button icon-only color="danger" clear (click)="addPhoto()">
+      <ion-icon name="images"></ion-icon>
+    </button>
+
+    <ion-input type="text" placeholder="Let us know what you think." name="text" [(ngModel)]="text"></ion-input>
+
+    <button ion-button icon-only color="danger" clear (click)="recommend()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </ion-row>
+</ion-footer>

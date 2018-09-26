@@ -8,6 +8,9 @@ page-codesign {
   height: 100%;
   text-align: center;
 }
+.wrapper {
+    text-align: center;
+}
 
     .rowStyle {
         border: solid map-get($colors , danger) 1px;
@@ -21,7 +24,7 @@ page-codesign {
     }
 
     .bottom-bar{
-        background-color: map-get($colors , semi-light);
+        background-color: map-get($colors , danger);
 
         .border-right {
             border-right: 1px solid map-get($colors, light );

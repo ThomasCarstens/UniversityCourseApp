@@ -10,8 +10,8 @@ import { FeedPage } from '../feed/feed';
 //import { CodesignPage } from '../codesign/codesign';
 import { Firebase } from '@ionic-native/firebase';
 import { NgForm } from '@angular/forms';
-
-
+import { PopupsProvider } from '../../providers/popups/popups';
+//import { NavigationProvider } from '../../providers/navigation/navigation';
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
 @IonicPage()
@@ -43,6 +43,8 @@ export class CodesignPage {
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private firebaseCordova: Firebase,
+              private popup: PopupsProvider,
+              //private navigation: NavigationProvider,
               //public userservice: UserProvider,
             ) {
     //testing for displayname: the following works
@@ -55,7 +57,7 @@ export class CodesignPage {
     //}
 
 
-    this.HowItWorks();
+    //this.navigation.HowItWorks();
 
     this.firebaseCordova.getToken().then(async (token) => {
       console.log(token)
@@ -79,24 +81,11 @@ gotoCodesign(){
   this.navCtrl.setRoot(CodesignPage);
 }
 
-  HowItWorks(){
 
-  let alert = this.alertCtrl.create({
-    title: 'How it works',
-    subTitle: 'Let us know which option you prefer, in the comments of each post. Press the bonfire icon to return to main feed. ',
-    buttons: [{
-    text: 'Got it',
-  }],
-    enableBackdropDismiss: false
-  });
-  alert.present();
+  submitReturn(){
 
-  }
-
-  submitReturn(form: NgForm){
-
-    this.navCtrl.setRoot(FeedPage);
-
+    this.navCtrl.pop();
+    this.popup.Thankyounote();
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({  //devices to users.
       //survey_value: '1',
       surveytime: firebase.firestore.FieldValue.serverTimestamp()
@@ -238,6 +227,7 @@ gotoCodesign(){
   }
 
   recommend() {
+  //  this.popup.Thankyounote();    //not necessary if codesign pops off automatically.
 
     firebase.firestore().collection("recommendations").add({
       text: this.text,

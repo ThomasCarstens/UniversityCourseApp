@@ -18,26 +18,19 @@ import { AppVersion } from '@ionic-native/app-version';
 })
 
 export class UpdaterPage {
-  MostRecentVersion:string;
-  CurrentVersion:string="2.0.1"; //to be updated every version (here and updater.ts)
+  requiredversion:string;
+  appversion:string; //to be updated every version (here and updater.ts)
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
 
     firebase.firestore().collection("settings").doc("version").get().then(async(user) => {
         //await user.data().currentversion;
-        this.CurrentVersion = user.data().currentversion || "none"
-
+        this.appversion = user.data().ANDROIDappversion || "none"
+        this.requiredversion = user.data().requiredversion || "none";
       }).catch(err => {
         console.log(err);
       })
-
-      firebase.firestore().collection("requiredversion").doc("holidayversion").get().then(async (data) => {
-           this.MostRecentVersion = await data.data().version_nb || "none";
-
-        }).catch((err) => {
-          console.log(err)
-        })
 
         setTimeout(() => {
              this.pushtoupdate();
@@ -52,17 +45,15 @@ export class UpdaterPage {
   pushtoupdate(){
 
     //find required version number from Firestore
-    console.log(this.MostRecentVersion);
-    console.log(this.CurrentVersion);
+    console.log(this.requiredversion);
+    console.log(this.appversion);
 
-            if (this.MostRecentVersion!= null) {
-              if (this.MostRecentVersion === this.CurrentVersion) {
+              if (this.requiredversion === this.appversion) {
                   console.log('Up to date.');
                   this.navCtrl.setRoot(LoginPage);
               } else { console.log('Update Required.');
                   //nothing happens.
                }
-           }
 
   }
 

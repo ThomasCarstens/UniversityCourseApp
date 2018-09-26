@@ -10,8 +10,8 @@
     </ion-buttons>
   -->
   <ion-buttons left>
-    <button item-left ion-button icon-only clear (click)="gotoCodesign()">
-      <ion-icon name="bonfire"></ion-icon>
+    <button item-left ion-button icon-only clear (click)="this.popup.HowtoContribute()">
+      <ion-icon name="beer"></ion-icon>
     </button>
   </ion-buttons>
 
@@ -24,11 +24,7 @@
     </ion-buttons>
 
   </ion-navbar>
-
-
 </ion-header>
-
-
 
 <ion-content overflow-scroll=true>
 
@@ -68,7 +64,7 @@
 
 
     <ion-item-divider color="danger">
-      Anonymous <!--{{ post.data().owner_name }}-->
+      Student <!--{{ post.data().owner_name }}-->
     </ion-item-divider>
 
     <ion-item text-wrap>
@@ -125,7 +121,7 @@
 
       <ion-textarea rows="1" name="dummyText"  type="text" placeholder="Say something..." [(ngModel)]="text" autosize></ion-textarea>
 
-      <button ion-button icon-right  color="danger" clear (click)="post()">
+      <button ion-button icon-right  color="danger" clear (click)="PreparePost()">
         <ion-icon name="send"></ion-icon>
       </button>
   </ion-row>

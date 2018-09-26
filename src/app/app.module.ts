@@ -13,6 +13,7 @@ import { SignupPage } from '../pages/signup/signup';
 import { FeedPage } from '../pages/feed/feed';
 import { CommentsPage } from '../pages/comments/comments';
 import { CodesignPage } from '../pages/codesign/codesign';
+import { ConfigurePage } from '../pages/configure/configure';
 
 import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
@@ -28,6 +29,7 @@ import { UpdaterPage } from '../pages/updater/updater';
 import { PopoverController } from 'ionic-angular';
 
 import { Autosize } from '../components/autosize';
+import { PopupsProvider } from '../providers/popups/popups';
 
 firebase.initializeApp(config);
 firebase.firestore().settings({
@@ -43,7 +45,8 @@ firebase.firestore().settings({
     CommentsPage,
     UpdaterPage,
     CodesignPage,
-    Autosize
+    Autosize,
+    ConfigurePage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,8 @@ firebase.firestore().settings({
     FeedPage,
     CommentsPage,
     UpdaterPage,
-    CodesignPage
+    CodesignPage,
+    ConfigurePage
   ],
   providers: [
     StatusBar,
@@ -68,9 +72,11 @@ firebase.firestore().settings({
     AngularFireAuth,
     AppVersion,
     PopoverController,
+    //ConfigurePage,
 //    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserProvider
+    UserProvider,
+    PopupsProvider,
   ]
 })
 export class AppModule {}

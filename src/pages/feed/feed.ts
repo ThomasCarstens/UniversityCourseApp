@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommentsPage } from '../comments/comments';
 import { CodesignPage } from '../codesign/codesign';
 import { Firebase } from '@ionic-native/firebase';
-
+import { PopupsProvider } from '../../providers/popups/popups';
 
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
@@ -25,12 +25,18 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string;
-  StudentType:string;
-  StudentNumber:string;
+  usertype:string;
+  username:string;
   user: any[] = [];
   idea: string;
   latestsurvey: string='2';
-  popuprecord: string;
+  appealrecord: string;
+  forcerecord: string;
+  featuresrecord: string;
+  feed_lurk: number;
+  post_lurk: number;
+  askpost_lurkers: string;
+  please_resolve: number;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -42,16 +48,9 @@ export class FeedPage {
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private firebaseCordova: Firebase,
+              public popup: PopupsProvider
               //public userservice: UserProvider,
             ) {
-    //testing for displayname: the following works
-    //console.log(firebase.auth().currentUser.displayName)
-    //var currentuser = firebase.auth().currentUser;
-    //if (currentuser!= null) {
-    //  currentuser.providerData.forEach(function (profile) {
-    //    console.log('Name:'+profile.displayName)
-    //  })
-    //}
 
     this.firebaseCordova.getToken().then(async (token) => {
       console.log(token)
@@ -62,29 +61,76 @@ export class FeedPage {
       console.log(err)
     })
 
-    //CHECK USER POPUPRECORD vs LATESTSURVEY both on firestore.
-firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then(async(user) => {
-  //await user.data().survey_value;
-  this.popuprecord = user.data().survey_value || "none";
-}).catch(err => {
-  console.log(err);
-})
-
-firebase.firestore().collection("settings").doc("surveys").get().then(async(user) => {
-  //await user.data().survey_value;
-  this.latestsurvey = user.data().latestsurvey || "none";
-}).catch(err => {
-  console.log(err);
-})
 
 this.getPosts();
 
 //timeout for firestore retrieval time.
+
+firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
+    this.username = data.data().name || "none";
+    this.usertype = data.data().usertype || "none";
+}).catch(err => {
+  console.log(err);
+})
+
+firebase.firestore().collection("settings").doc("feedback").get().then((data) => {
+    this.askpost_lurkers = data.data().askpost_lurkers || "none";
+}).catch(err => {
+  console.log(err);
+})
+
+
+//setting up doc if it does not exist.
+
+firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).get().then((docSnapshot) => {
+  if (docSnapshot.exists) {
+    console.log('exists');
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).get().then((data) => {
+      this.feed_lurk = data.data().feed_lurk;
+      this.post_lurk = data.data().post_lurk;
+      this.please_resolve = data.data().please_resolve;
+    }).catch(err => {
+      console.log(err);
+    })
+
+  } else {
+    console.log('does not exist');
+
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+      feed_lurk : 0,
+      post_lurk : 0,
+      please_resolve : 0,
+  }).then((data) => {
+        console.log("New feedback uid doc on firestore.");
+        this.feed_lurk = 0;
+        this.post_lurk = 0;
+        this.please_resolve = 0;
+    }).catch(err => {
+      console.log(err);
+    })
+
+}
+});
+
+if (1){
+
+} else {
+
+  //firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+  //    feed_lurk: this.feed_lurk,
+  //}, {
+  //  merge: true
+  //}
+}
+
 setTimeout(() => {
-this.popup();
+console.log('Current user is', this.username);
+console.log('Current usertype is', this.usertype);
+console.log('Current feedback setting is', this.askpost_lurkers, '(true/false)');
+console.log('Current FeedLurk is', this.feed_lurk);
+console.log('Current PostLurk is', this.post_lurk);
+this.CheckNumberVisits();
 }, 3000);
-
-
 
   }
 
@@ -93,100 +139,65 @@ this.popup();
     console.log('ionViewDidLoad CodesignPage');
   }
 
+
 ////////////////////////////FUNCTIONS///////////////////////////
+CheckNumberVisits(){
+  if (this.askpost_lurkers="1"){
 
-
-//////////////////////////Check if popups are triggered.
-  popup(){
-
-  console.log('Latest Survey:', this.latestsurvey);
-  console.log('Last Survey by', firebase.auth().currentUser.displayName, ':', this.popuprecord);
-
-    if(this.popuprecord !== this.latestsurvey) {
-        this.OnceOffBasicAlert();  //only happens once.
-        //this.popuprecord = this.latestsurvey;  happens in alertcontroller
-      } else {
-//        nothing yet, regular user.
-        console.log('do not ask', firebase.auth().currentUser.displayName, 'twice.')
-      }
-      //SET UP VARIABLE ON STORE
-
-  }
-
-
-
-//this.NewFeatures();
-
-gotoCodesign(){
-  this.navCtrl.setRoot(CodesignPage);
-}
-
-  askkindly(){
-
-  let alert = this.alertCtrl.create({
-    title: 'Collaborative Feedback Project',
-    subTitle: 'As part of his project, Thomas is required to hear your opinion on the app- and about the course.',
-    buttons: [{
-    text: 'Codesign',
-    handler: () => {
-      // user has clicked the alert button
-      // begin the alert's dismiss transition
-      let navTransition = alert.dismiss();
-
-      // start some async method
-      this.navCtrl.setRoot(CodesignPage).then(() => {
-        // once the async operation has completed
-        // then run the next nav transition after the
-        // first transition has finished animating out
-
-        navTransition.then(() => {
-          this.navCtrl.pop();
-        });
-      });
-      return false;
-    }
-  }],
-    enableBackdropDismiss: false
-  });
-  alert.present();
-
-  }
-
-  OnceOffBasicAlert(){
-  let alert = this.alertCtrl.create({
-    title: 'New Features',
-    subTitle: 'VERSION 3.0 - Smooth comment sections - can add pics in comments! Also click the bonfire logo above to contribute to a discussion about the app and ultimately about the course.',
-    inputs: [
-      {
-        type: 'checkbox',
-        label: 'don\'t ask me again',
-        handler:(e)=>{
-          // e.checked is the checkbox value (true or false)
-           console.info('value: ',e.checked)
-//IF TRUE IF FALSE TO BE ADDED.
-           this.popuprecord = this.latestsurvey;
-           console.log('Asked kindly, now Last Survey by', firebase.auth().currentUser.displayName, 'to be set to', this.popuprecord);
-        }
-      }
-    ],
-    buttons: [{
-    text: 'Ok',
-    handler: () => {
-
-    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
-    survey_value: this.popuprecord,
+    if (this.please_resolve==1){
+    this.popup.PleaseResolve();
+    this.please_resolve++
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+        please_resolve: this.please_resolve,
     }, {
-    merge: true
+      merge: true
     }).then(() => {
-    console.log('RESET: Last Survey by', firebase.auth().currentUser.displayName, ':', this.popuprecord);
+      console.log("New feed_lurk on firestore.");
     }).catch(err => {
-    console.log(err);
-  });
+      console.log(err);
+    })
 }
-}] //BUTTON
-}); //ALERTCONTROLLER
-alert.present();
+    else if (this.post_lurk!==1){
+    this.feed_lurk++;
+    console.log('Record of Feed Lurking:',this.feed_lurk);
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+        feed_lurk: this.feed_lurk,
+    }, {
+      merge: true
+    }).then(() => {
+      console.log("New feed_lurk on firestore.");
+    }).catch(err => {
+      console.log(err);
+    })
+
+    if (this.feed_lurk==1){
+  this.popup.NewFeatures();
+    }
+
+    if (this.feed_lurk==2){
+  this.popup.Purpose();
+    }
+}
+//ask the opinion if has already posted.
+  else if (this.post_lurk==1){
+
+      this.popup.AboutPreviousPost();
+      this.post_lurk++;
+      console.log('Feedpage Record of Post Lurking:',this.post_lurk);
+      firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+          post_lurk: this.post_lurk,
+      }, {
+        merge: true
+      }).then(() => {
+        console.log("New post_lurk on firestore.");
+      }).catch(err => {
+        console.log(err);
+      })
   }
+  }
+}
+
+////////////////Other functional items//////////////////////////
 
   updateToken(token: string, uid: string){
 
@@ -211,8 +222,8 @@ alert.present();
     console.log(firebase.auth().currentUser.uid);
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
-        this.StudentType = data.data().usertype || "none";
-        this.StudentNumber = data.data().studentnumber || "none";
+        this.usertype = data.data().usertype || "none";
+        this.username = data.data().studentnumber || "none";
         //this.idea=data.data().survey_value || "none";
 
         //console.log(this.idea);
@@ -315,8 +326,47 @@ alert.present();
 
   }
 
-  post() {
+ PreparePost() {
+   if (this.text !== ""){
+     this.PostSure();
+ } else {
+    let toast = this.toastCtrl.create({
+      message: "Please add text to your post.",
+      duration: 3000
+    }).present();
+ }
+}
 
+PostSure(){
+  let alert = this.alertCtrl.create({
+    title: 'Are you sure you want to post?',
+    message: 'This action cannot be undone.',
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Sure',
+        handler: () => {
+          console.log('Sure clicked');
+//            if (this.postexperience=="1"){
+            this.post();
+            this.popup.PostFeedback();
+            //CONTINUE WITH POST CODE
+//            } else {this.Thankyounote()}
+        }
+      }
+    ],
+    enableBackdropDismiss: false
+  });
+  alert.present();
+}
+
+  post() {
     firebase.firestore().collection("posts").add({
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
@@ -340,12 +390,14 @@ alert.present();
       }).present();
 
       this.getPosts();
+      //this.popup.PostFeedback();                                                        //Feedback on post!
     }).catch((err) => {
       console.log(err)
     })
 
-
+    console.log('a b a',this.text,'b')
   }
+
 
   ago(time) {
     let difference = moment(time).diff(moment());
@@ -366,11 +418,6 @@ alert.present();
 
   }
 
-
-gotoComments() {
-
-
-}
 
 
   addPhoto() {
@@ -516,5 +563,8 @@ gotoComments() {
 //    })
 //}
 
+gotoCodesign(){
+  this.navCtrl.push(CodesignPage);
+}
 
 }

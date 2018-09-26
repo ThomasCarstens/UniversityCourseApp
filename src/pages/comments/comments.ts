@@ -1,8 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController, ToastController, LoadingController } from 'ionic-angular';
+//import { NavController, NavParams, ViewController, ToastController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase';
 import moment from 'moment';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ConfigurePage } from '../configure/configure';
+import { PopupsProvider } from '../../providers/popups/popups';
+import { ViewController, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal } from 'ionic-angular';
+
 
 @Component({
   selector: 'page-comments',
@@ -13,6 +17,7 @@ export class CommentsPage {
   post: any = {};
   comments : any[] = [];
   CurrentStudentName : string;
+  currentusertype : string;
   commentownername : string;
   text: string = "";
   posts: any[] = [];
@@ -21,13 +26,17 @@ export class CommentsPage {
   infiniteEvent: any;
   image: string;
   user: any[] = [];
-
+  comment_lurk: number;
+  askcomment_lurkers : string;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl: ViewController,
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              private camera: Camera,) {
+              private camera: Camera,
+              private alertCtrl: AlertController,
+              //public configure: ConfigurePage,
+              public popup: PopupsProvider) {
 
 
 this.loadcomments();
@@ -35,19 +44,71 @@ this.loadcomments();
   firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
 
       this.CurrentStudentName = data.data().name || "none";
-      console.log(this.CurrentStudentName); //this works
+      this.currentusertype = data.data().usertype || "none";
+  });
 
-
+  firebase.firestore().collection("settings").doc("feedback").get().then((data) => {
+      this.askcomment_lurkers = data.data().askcomment_lurkers  || "none";
   this.scrolldown();
   });
 
-//for each comment: comment details.
-//  firebase.firestore().collection("comments").doc().get().then((data) => {
-//      this.commentownername = data.data().owner_name|| "none";
-//      console.log(this.commentownername);
-//  });
+  firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).get().then((data) => {
+      this.comment_lurk = data.data().comment_lurk || 0;
+  });
 
+
+  setTimeout(() => {
+  this.CheckNumberVisits();
+}, 1000);
 }
+
+CheckNumberVisits(){
+  if (this.askcomment_lurkers ="1"){
+    this.comment_lurk++;
+    console.log('Record of Comment Lurking:',this.comment_lurk);
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+
+        comment_lurk: this.comment_lurk,
+    }, {
+      merge: true
+    }).then(() => {
+      console.log("lurkerrecord saved to cloud firestore");
+    }).catch(err => {
+      console.log(err);
+    })
+
+    if (this.comment_lurk==2){
+  this.popup.AboutAnonymity();
+  this.popup.PrepareFeedback();
+    }
+
+    else if (this.comment_lurk==4){
+  this.popup.FunctionalityCheckbox();
+  this.popup.PrepareFeedback();
+    }
+
+   else  if (this.comment_lurk==7){
+  this.popup.AboutMotivation();
+  this.popup.PrepareFeedback();
+    }
+
+   else if (this.comment_lurk==10){
+  this.popup.AboutCollaboration();
+  this.popup.PrepareFeedback();
+    }
+
+    else if (this.comment_lurk==13){
+  this.popup.AboutAccountability();
+  this.popup.PrepareFeedback();
+   }
+
+   else if (this.comment_lurk==16){
+ this.popup.AboutPosting();
+ this.popup.PrepareFeedback();
+  }
+  }
+}
+
 
   scrolldown(){
     this.content.scrollToBottom(1000);//1000ms animation speed
@@ -57,6 +118,7 @@ this.loadcomments();
   loadcomments(){
     this.post = this.navParams.get("post");
     console.log(this.post)
+    console.log('Posting Student is:', this.post.owner_name);
 
     firebase.firestore().collection("comments")
     .where("post", "==", this.post.id)
@@ -64,6 +126,7 @@ this.loadcomments();
     .get()
     .then((data) => {
       this.comments = data.docs;
+      console.log('Commenting Student is:', data.docs);
     }).catch((err) => {
       console.log(err)
     })
@@ -79,6 +142,50 @@ this.loadcomments();
     return moment.duration(difference).humanize();
   }
 
+  resolve(){
+  this.popup.ResolveSure();
+  }
+
+  PrepareComment() {
+    if (this.text !== ""){
+      this.CommentSure();
+  } else {
+     let toast = this.toastCtrl.create({
+       message: "Please add text to your post.",
+       duration: 3000
+     }).present();
+  }
+ }
+
+ CommentSure(){
+   let alert = this.alertCtrl.create({
+     title: 'Are you sure you want to comment?',
+     message: 'This action cannot be undone.',
+     buttons: [
+       {
+         text: 'Cancel',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancel clicked');
+         }
+       },
+       {
+         text: 'Sure',
+         handler: () => {
+           console.log('Sure clicked');
+ //            if (this.postexperience=="1"){
+             this.newcomment();
+             //this.popup.CommentFeedback();
+             //CONTINUE WITH POST CODE
+ //            } else {this.Thankyounote()}
+         }
+       }
+     ],
+     enableBackdropDismiss: false
+   });
+   alert.present();
+ }
+
   newcomment() {
     firebase.firestore().collection("comments").add({
                             text: this.text,
@@ -86,7 +193,8 @@ this.loadcomments();
                             owner: firebase.auth().currentUser.uid,
                             owner_name: firebase.auth().currentUser.displayName,
                             created: firebase.firestore.FieldValue.serverTimestamp(),
-                            owner_email: firebase.auth().currentUser.email
+                            owner_email: firebase.auth().currentUser.email,
+                            usertype: this.currentusertype,
 
                           }).then(async (doc) => {
                             console.log(doc)
@@ -189,4 +297,5 @@ this.loadcomments();
                           })
 
                         }
+
 }

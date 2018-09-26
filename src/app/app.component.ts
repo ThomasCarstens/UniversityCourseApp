@@ -52,8 +52,8 @@ export class MyApp {
 
   }
 
-GotoCodesign(){
-  this.rootPage = CodesignPage;
-}
+//GotoCodesign(){
+//  this.rootPage = CodesignPage;
+//}
 
 }
