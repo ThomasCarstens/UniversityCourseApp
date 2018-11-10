@@ -172,7 +172,7 @@ CheckNumberVisits(){
 
   if (this.force_contribute==1){
     if (this.student_must_contribute==0){
-      this.popup.ForceContribute();  
+      this.popup.ForceContribute();
     }}
 
   else if (this.askpost_lurkers=="1"){
@@ -454,8 +454,57 @@ PostSure(){
 
   addPhoto() {
 
-    this.launchCamera();
+    const actionSheet = this.actionSheetCtrl.create({
+              title: 'Adding a Photo',
+              buttons: [
+                {
+                  text: 'Use Camera',
+                  role: 'destructive',
+                  handler: () => {
+                    this.launchCamera();
+                    console.log('Camera clicked');
+                  }
+                },{
+                  text: 'Load from Library',
+                  handler: () => {
+                    //this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+                    this.openLibrary();
+                    console.log('Library clicked');
+                  }
+                },{
+                  text: 'Cancel',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                  }
+                }
+              ]
+            });
+            actionSheet.present();
+  }
 
+  openLibrary() {
+    let options: CameraOptions = {
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      targetHeight: 512,
+      targetWidth: 512,
+      allowEdit: true
+    }
+
+    this.camera.getPicture(options).then((base64Image) => {
+      console.log(base64Image);
+
+      this.image = "data:image/png;base64," + base64Image;
+
+
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   launchCamera() {
