@@ -31,6 +31,8 @@ import { PopoverController } from 'ionic-angular';
 import { Autosize } from '../components/autosize';
 import { PopupsProvider } from '../providers/popups/popups';
 
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+
 firebase.initializeApp(config);
 firebase.firestore().settings({
   timestampsInSnapshots: true
@@ -72,6 +74,7 @@ firebase.firestore().settings({
     AngularFireAuth,
     AppVersion,
     PopoverController,
+    PhotoViewer,
     //ConfigurePage,
 //    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

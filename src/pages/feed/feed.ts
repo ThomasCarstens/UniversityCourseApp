@@ -9,6 +9,7 @@ import { CommentsPage } from '../comments/comments';
 import { CodesignPage } from '../codesign/codesign';
 import { Firebase } from '@ionic-native/firebase';
 import { PopupsProvider } from '../../providers/popups/popups';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
@@ -50,7 +51,8 @@ export class FeedPage {
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private firebaseCordova: Firebase,
-              public popup: PopupsProvider
+              public popup: PopupsProvider,
+              private photoViewer: PhotoViewer
               //public userservice: UserProvider,
             ) {
 
@@ -451,6 +453,11 @@ PostSure(){
   }
 
 
+  ViewPhoto(url: string) {
+    //this.image =
+    this.photoViewer.show(url, '', {share: true});
+  }
+
 
   addPhoto() {
 
@@ -548,7 +555,7 @@ PostSure(){
       uploadTask.on("state_changed", (taskSnapshot: any) => {
         console.log(taskSnapshot)
         let percentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100;
-        loading.setContent("Uploaded " + percentage + "% ...")
+        loading.setContent("Uploaded " + percentage + "%...")
 
       }, (error) => {
         console.log(error)
