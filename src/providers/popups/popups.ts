@@ -826,25 +826,10 @@ PrepareFeedback(){
 }
 
   Thankyounote(){
-    let alert = this.alertCtrl.create({
-      title: 'Thank you very much for your help.',
-      subTitle: 'Your recommendations help customise the app for your learning.',
-      buttons: [
-
-        {
-          text: 'Ok',
-          handler: offhand => {
-            if (1) {
-            } else {
-              // invalid login
-              return false;
-            }
-          }
-        }
-      ],
-      enableBackdropDismiss: false
-    });
-    alert.present();
+    let toast = this.toastCtrl.create({
+      message: "Thank you for contributing to the app.",
+      duration: 3000
+    }).present();
   }
 
 

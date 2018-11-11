@@ -14,6 +14,7 @@ import { FeedPage } from '../pages/feed/feed';
 import { CommentsPage } from '../pages/comments/comments';
 import { CodesignPage } from '../pages/codesign/codesign';
 import { ConfigurePage } from '../pages/configure/configure';
+import { PasswordresetPage } from '../pages/passwordreset/passwordreset';
 
 import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
@@ -22,7 +23,10 @@ import firebase from 'firebase';
 import { config } from './app.firebaseconfig';
 
 import { UserProvider } from '../providers/user/user';
+
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppVersion } from '@ionic-native/app-version';
 import { UpdaterPage } from '../pages/updater/updater';
@@ -34,6 +38,7 @@ import { PopupsProvider } from '../providers/popups/popups';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 firebase.initializeApp(config);
+
 firebase.firestore().settings({
   timestampsInSnapshots: true
 })
@@ -48,12 +53,17 @@ firebase.firestore().settings({
     UpdaterPage,
     CodesignPage,
     Autosize,
-    ConfigurePage
+    ConfigurePage,
+    PasswordresetPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(config),
+    AngularFirestoreModule,
+    //AngularFireModule
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -64,7 +74,8 @@ firebase.firestore().settings({
     CommentsPage,
     UpdaterPage,
     CodesignPage,
-    ConfigurePage
+    ConfigurePage,
+    PasswordresetPage
   ],
   providers: [
     StatusBar,

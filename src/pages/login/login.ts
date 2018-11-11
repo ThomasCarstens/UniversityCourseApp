@@ -4,13 +4,14 @@ AlertController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
 import firebase from 'firebase';
 import { FeedPage } from '../feed/feed';
+import { PasswordresetPage } from '../passwordreset/passwordreset';
 import { AppVersion } from '@ionic-native/app-version';
 
 import { UpdaterPage } from '../updater/updater';
 import { PopoverController } from 'ionic-angular';
 
 import { NgForm } from '@angular/forms';
-import { AngularFireAuth } from 'angularfire2/auth';
+//import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -88,6 +89,9 @@ export class LoginPage {
       });
   }
 
+  passwordreset() {
+    this.navCtrl.push(PasswordresetPage);
+  }
 /* old version
   login(){
 
