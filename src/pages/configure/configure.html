@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>New Post</ion-title>
+    <ion-title>Configure Post</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,18 +18,22 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
+  <div class="item profilepic-border" align="center" *ngIf="post.data().image">
+  	<button class="profilebutton" (click)="removePhoto()">
+      <ion-icon name="close-circle"></ion-icon>
+    </button>
+  	<img class="profilepic padding-bottom" [src]="post.data().image" *ngIf="post.data().image">
+  </div>
+
     <ion-row margin class="rowStyle">
+      <button ion-button item-left color="danger" clear (click)="addPhoto()">
+        <ion-icon name="images"></ion-icon>
+      </button>
 
-      <ion-item>
-      <ion-textarea rows="1" name="dummyText" [(ngModel)]="dummyText" autosize></ion-textarea>
-    </ion-item>
+      <ion-textarea rows="1" name="dummyText"  type="text" value="{{post.data().text}}" [(ngModel)]="text" autosize></ion-textarea>
 
-
-  <button ion-button icon-only color="danger" clear (click)="addPhoto()">
-    <ion-icon name="images"></ion-icon>
-  </button>
-
+      <button ion-button icon-right  color="danger" clear (click)="PreparePost()">
+        <ion-icon name="send"></ion-icon>
+      </button>
   </ion-row>
-  </ion-toolbar>
 </ion-footer>

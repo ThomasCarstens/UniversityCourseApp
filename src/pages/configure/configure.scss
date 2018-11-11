@@ -1,4 +1,4 @@
-page-configure {
+page-feed {
   ion-title {
   position: absolute;
   top: 0;
@@ -9,9 +9,18 @@ page-configure {
   text-align: center;
 }
 
+.fineprint {
+  font-size: 10px;
+  text-align: center;
+}
+
+.posting {
+  width: 50%;
+}
+
     .rowStyle {
         border: solid map-get($colors , danger) 1px;
-        //border-radius: 30px;
+        border-radius: 5px;
         margin-top: 15px;
         //style: display:flex; flex-direction:column;justify-content:center;color:#000000;
 
@@ -36,6 +45,31 @@ page-configure {
 
     .round-corners {
         border-radius: 24px;
+    }
+    ion-footer {
+      background-color: map-get($colors , semi-light);
+      //color:#ffffff;
+      .profilebutton {
+          z-index: 10;
+          position: absolute;
+          left: 22%;
+          top: 8%;
+          margin: auto;
+      }
+      .profilepic {
+        border:1px solid #000000;
+        width: 65%;
+        height: 65%;
+      }
+      .profilepic-border {
+        position: relative;
+        background: #f9f2f2;
+      }
+
+    }
+    ion-row{
+      background-color: map-get($colors , semi-light);
+      //color:#ffffff;
     }
 
 }

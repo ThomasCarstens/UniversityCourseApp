@@ -7,6 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import { CommentsPage } from '../comments/comments';
 import { CodesignPage } from '../codesign/codesign';
+import { ConfigurePage } from '../configure/configure';
 import { Firebase } from '@ionic-native/firebase';
 import { PopupsProvider } from '../../providers/popups/popups';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
@@ -623,11 +624,18 @@ PostSure(){
   }
 
   comment(post) {
-
             this.modalCtrl.create(CommentsPage, {
               "post": post
             }).present();
+  }
 
+  editPost(post){
+    this.modalCtrl.create(ConfigurePage, {
+      "post": post
+    }).present();
+//this.navCtrl.push(ConfigurePage, {
+//      "post": post
+//    });
   }
 
 //  deleteQuestion(post: string)
@@ -667,7 +675,7 @@ settings(post){
               {
                 text: 'Edit Post',
                 handler: () => {
-                  //this.editpost();
+                  this.editPost(post);
                 }
               },{
                 text: 'Delete Post',
@@ -689,21 +697,17 @@ settings(post){
 deletePost(post){
   firebase.firestore().collection("posts").doc(post.id).delete().then(function() {
       console.log("Document successfully deleted!");
-      //refresh the page
-      this.appCtrl.getRootNav().setRoot(FeedPage);
   }).catch(function(error) {
       console.error("Error removing document: ", error);
   });
+
+  //refresh the page
+  this.appCtrl.getRootNav().setRoot(FeedPage);
 }
 
-editPost(post){
-  firebase.firestore().collection("posts").doc(post.id).delete().then(function() {
-      console.log("Document successfully deleted!");
-      //refresh the page
-      this.appCtrl.getRootNav().setRoot(FeedPage);
-  }).catch(function(error) {
-      console.error("Error removing document: ", error);
-  });
+removePhoto() {
+  //very ugly way of doing it, because text erased.
+  this.appCtrl.getRootNav().setRoot(FeedPage);
+  console.log('remove Pic')
 }
-
 }

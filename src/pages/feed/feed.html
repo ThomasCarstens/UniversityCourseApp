@@ -69,7 +69,7 @@
     </ion-item-divider>
 
     <ion-item text-wrap>
-      {{ post.data().text }}
+      {{ post.data().text }} <!--<ion-textarea rows="1" name="dummyText"  type="text" placeholder="{{ post.data().text }}" [(ngModel)]="text" autosize></ion-textarea>-->
     </ion-item>
 
     <img [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
@@ -83,7 +83,7 @@
         </button>
       </ion-col> -->
       <ion-col>
-        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post.id)">
+        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">
         <!--<button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">-->
           <ion-icon name="text"></ion-icon>
           <small>{{ post.data().commentsCount || 0 }} Comments</small>
@@ -117,12 +117,18 @@
 
 
 <ion-footer>
+  <div class="item profilepic-border" align="center" *ngIf="image">
+  	<button class="profilebutton" (click)="removePhoto()">
+      <ion-icon name="close-circle"></ion-icon>
+    </button>
+  	<img class="profilepic padding-bottom" [src]="image">
+  </div>
 
-  <ion-row margin *ngIf="image">
+<!--  <ion-row margin *ngIf="image">
     <ion-card class="round-corners">
       <img [src]="image" class="round-corners">
     </ion-card>
-  </ion-row>
+  </ion-row> -->
 
     <ion-row margin class="rowStyle">
       <button ion-button item-left color="danger" clear (click)="addPhoto()">
