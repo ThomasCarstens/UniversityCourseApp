@@ -43,6 +43,7 @@ export class FeedPage {
   please_resolve: number;
   student_must_contribute: number;
   force_contribute: number;
+  anonymous: boolean;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -376,41 +377,49 @@ CheckNumberVisits(){
 }
 
 PostSure(){
-  let alert = this.alertCtrl.create({
-    title: 'Are you sure you want to post?',
-    message: 'This action cannot be undone.',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      },
-      {
-        text: 'Sure',
-        handler: () => {
-          console.log('Sure clicked');
-//            if (this.postexperience=="1"){
-            this.post();
-            this.popup.PostFeedback();
-            //CONTINUE WITH POST CODE
-//            } else {this.Thankyounote()}
-        }
-      }
-    ],
-    enableBackdropDismiss: false
-  });
-  alert.present();
+
+  const actionSheet = this.actionSheetCtrl.create({
+            title: 'Do you want to post as anonymous',
+            subTitle: 'People prefer to know who they are helping.',
+            buttons: [
+              {
+                text: 'Yes, post as anonymous.',
+                handler: () => {
+                  console.log('Anonymous clicked');
+                  this.anonymous = true;
+                  //execute full code.
+                  this.post(this.anonymous);
+                }
+              },
+              {
+                text: 'No, reveal my student number.',
+                handler: () => {
+                  console.log('Anonymous clicked');
+                  this.anonymous = false;
+                  //execute full code.
+                  this.post(this.anonymous);
+                }
+              },
+              {
+                text: 'Cancel',
+                handler: () => {
+                  console.log('Cancel clicked');
+                  //execute full code.
+                }
+              },
+            ]
+          });
+          actionSheet.present();
 }
 
-  post() {
+  post(if_anonymous) {
     firebase.firestore().collection("posts").add({
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
       owner_name: firebase.auth().currentUser.displayName,
-      owner_email: firebase.auth().currentUser.email
+      owner_email: firebase.auth().currentUser.email,
+      anonymous: if_anonymous,
     }).then(async (doc) => {
       console.log(doc)
 
@@ -425,7 +434,9 @@ PostSure(){
       let toast = this.toastCtrl.create({
         message: "Your post has been created successfully.",
         duration: 3000
-      }).present();
+      }).present().then((feedback) => {
+        this.popup.PostFeedback();
+      })
 
       this.getPosts();
       //this.popup.PostFeedback();                                                        //Feedback on post!

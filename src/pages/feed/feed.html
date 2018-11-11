@@ -64,9 +64,14 @@
      Delete </button> -->
 
 
-    <ion-item-divider color="danger">
+    <ion-item-divider color="danger" *ngIf="post.data().anonymous==true">
       Student <!--{{ post.data().owner_name }}-->
     </ion-item-divider>
+
+    <ion-item-divider color="danger" *ngIf="post.data().anonymous==false">
+      {{ post.data().owner_name }}
+    </ion-item-divider>
+
 
     <ion-item text-wrap>
       {{ post.data().text }} <!--<ion-textarea rows="1" name="dummyText"  type="text" placeholder="{{ post.data().text }}" [(ngModel)]="text" autosize></ion-textarea>-->

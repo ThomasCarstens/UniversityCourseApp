@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal, ViewController } from 'ionic-angular';
 import firebase from 'firebase';
 import moment from 'moment';
 import { LoginPage } from '../login/login';
@@ -21,6 +21,9 @@ import { App } from 'ionic-angular';
 })
 export class ConfigurePage {
   post: any = {};
+  image: string;
+  newimage: string;
+  text: string;
 
   constructor( public navCtrl: NavController,
               public navParams: NavParams,
@@ -34,58 +37,34 @@ export class ConfigurePage {
               private firebaseCordova: Firebase,
               public popup: PopupsProvider,
               private photoViewer: PhotoViewer,
-              public appCtrl: App
+              public appCtrl: App,
+              public viewCtrl: ViewController,
             ) {
               this.post = this.navParams.get("post");
-              console.log(this.post)
+              this.image = this.navParams.get("post").data().image;
+              console.log(this.image)
+              this.text = this.navParams.get("post").data().text;
+              console.log(this.text)
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfigurePage');
   }
 
-/*
-  post() {
-    firebase.firestore().collection("posts").add({
-      text: this.text,
-      created: firebase.firestore.FieldValue.serverTimestamp(),
-      owner: firebase.auth().currentUser.uid,
-      owner_name: firebase.auth().currentUser.displayName,
-      owner_email: firebase.auth().currentUser.email
-    }).then(async (doc) => {
-      console.log(doc)
 
+close(){
+  this.viewCtrl.dismiss();
+}
 
-      if (this.image) {
-        await this.upload(doc.id)
-      }
+  removePhoto() {
+  this.image = null;
 
-      this.text = "";
-      this.image = undefined;
-
-      let toast = this.toastCtrl.create({
-        message: "Your post has been created successfully.",
-        duration: 3000
-      }).present();
-
-      this.getPosts();
-      //this.popup.PostFeedback();                                                        //Feedback on post!
-    }).catch((err) => {
-      console.log(err)
-    })
-
-    console.log('a b a',this.text,'b')
+  //this.appCtrl.getRootNav().setRoot(FeedPage);
+  console.log('remove Pic')
   }
-
-
-  ago(time) {
-    let difference = moment(time).diff(moment());
-    return moment.duration(difference).humanize();
-  }
-
 
   ViewPhoto(url: string) {
-    //this.image =
     this.photoViewer.show(url, '', {share: true});
   }
 
@@ -169,169 +148,18 @@ export class ConfigurePage {
     })
   }
 
-  upload(name: string) {
 
-    return new Promise((resolve, reject) => {
-
-      let loading = this.loadingCtrl.create({
-        content: "Uploading Image..."
-      })
-
-      loading.present();
-
-      let ref = firebase.storage().ref("postImages/" + name);
-
-      let uploadTask = ref.putString(this.image.split(',')[1], "base64");
-
-      uploadTask.on("state_changed", (taskSnapshot: any) => {
-        console.log(taskSnapshot)
-        let percentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100;
-        loading.setContent("Uploaded " + percentage + "%...")
-
-      }, (error) => {
-        console.log(error)
-      }, () => {
-        console.log("The upload is complete!");
-
-        uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-
-          firebase.firestore().collection("posts").doc(name).update({
-            image: url
-          }).then(() => {
-            loading.dismiss()
-            resolve()
-          }).catch((err) => {
-            loading.dismiss()
-            reject()
-          })
-
-        }).catch((err) => {
-          loading.dismiss()
-          reject()
-        })
-
-      })
-
-    })
-
-  }
-
-  like(post) {
-
-    let body = {
-      postId: post.id,
-      userId: firebase.auth().currentUser.uid,
-      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
-    }
-
-    let toast = this.toastCtrl.create({
-      message: "Updating like... Please wait."
-    });
-
-    toast.present();
-  //https://us-central1-myapp-93470.cloudfunctions.net/updateLikesCount
-    this.http.post("https://europe-west1-myapp-93470.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
-      responseType: "text"
-    }).subscribe((data) => {
-      console.log(data)
-
-      toast.setMessage("Like updated!");
-      setTimeout(() => {
-        toast.dismiss();
-      }, 3000)
-
-    }, (error) => {
-      toast.setMessage("An error has occured. Please try again later.")
-      setTimeout(() => {
-        toast.dismiss();
-      }, 3000)
-      console.log(error)
-    })
-
-  }
-
-  comment(post) {
-
-            this.modalCtrl.create(CommentsPage, {
-              "post": post
-            }).present();
-
-  }
-
-  //  deleteQuestion(post: string)
-  //  {
-  //
-  //    firebase.firestore().collection("archive").doc().add({
-  //        text: post.data().text,
-  //        created: post.data().created,
-  //        owner: post.data().owner,
-  //        owner_name: post.data().owner_name,
-  //        owner_email: post.data().owner_email
-  //      }).then(async (doc) => {
-  //        console.log(doc)
-  //
-  //      }).catch((err) => {
-  //        console.log(err)
-  //      })
-  //
-  //
-  //    firebase.firestore().collection("posts").doc("post").delete().then(function() {
-  //      console.log("Deleted");
-  //    }).catch(function(error) {
-  //      console.error("Error:", error);
-  //    })
-  //}
-
-  gotoCodesign(){
-  this.navCtrl.push(CodesignPage);
-  }
-
-  settings(post){
-  const actionSheet = this.actionSheetCtrl.create({
-            title: 'Post Settings',
-            buttons: [
-              {
-                text: 'Edit Post',
-                handler: () => {
-                  this.editPost(post);
-                }
-              },{
-                text: 'Delete Post',
-                handler: () => {
-                  this.deletePost(post);
-                }
-              },{
-                text: 'Cancel',
-                role: 'cancel',
-                handler: () => {
-                  console.log('Cancel clicked');
-                }
-              }
-            ]
-          });
-          actionSheet.present();
-  }
-
-  deletePost(post){
-  firebase.firestore().collection("posts").doc(post.id).delete().then(function() {
-      console.log("Document successfully deleted!");
+  updatePost(post){ //pseudo-post option.
+  console.log(this.text);
+  firebase.firestore().collection("posts").doc(post.id).update({
+      image: this.image,
+      text: this.text,
+  }).then(function() {
+      console.log("Document successfully updated!");
   }).catch(function(error) {
-      console.error("Error removing document: ", error);
+      console.error("Error updating document: ", error);
   });
-
-  //refresh the page
   this.appCtrl.getRootNav().setRoot(FeedPage);
-  }
-
-  editPost(post){
-  this.modalCtrl.create(ConfigurePage, {
-    "post": post
-  }).present();
-  }
-
-  removePhoto() {
-  this.appCtrl.getRootNav().setRoot(FeedPage);
-  console.log('remove Pic')
-  }
-  */
+  this.close();
+}
 }
