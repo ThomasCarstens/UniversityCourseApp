@@ -83,17 +83,27 @@
         </button>
       </ion-col> -->
       <ion-col>
-        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">
+        <button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post.id)">
         <!--<button ion-button block icon-left clear small color="danger" class="border-right" (click)="comment(post)">-->
           <ion-icon name="text"></ion-icon>
           <small>{{ post.data().commentsCount || 0 }} Comments</small>
         </button>
       </ion-col>
+
+      <ion-col>
+        <ion-buttons>
+          <button ion-button block icon-left clear small color="danger" (click)="settings(post)">
+            <ion-icon name="settings"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-col>
+
       <ion-col>
         <button ion-button block icon-left clear small color="danger">
           <small>{{ ago(post.data().created.toDate()) }} ago</small>
         </button>
       </ion-col>
+
     </ion-row>
 
   </ion-card>

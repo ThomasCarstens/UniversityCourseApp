@@ -10,6 +10,8 @@ import { CodesignPage } from '../codesign/codesign';
 import { Firebase } from '@ionic-native/firebase';
 import { PopupsProvider } from '../../providers/popups/popups';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { App } from 'ionic-angular';
+
 
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
@@ -52,7 +54,8 @@ export class FeedPage {
               private modalCtrl: ModalController,
               private firebaseCordova: Firebase,
               public popup: PopupsProvider,
-              private photoViewer: PhotoViewer
+              private photoViewer: PhotoViewer,
+              public appCtrl: App
               //public userservice: UserProvider,
             ) {
 
@@ -653,6 +656,54 @@ PostSure(){
 
 gotoCodesign(){
   this.navCtrl.push(CodesignPage);
+}
+
+settings(post){
+
+
+  const actionSheet = this.actionSheetCtrl.create({
+            title: 'Post Settings',
+            buttons: [
+              {
+                text: 'Edit Post',
+                handler: () => {
+                  //this.editpost();
+                }
+              },{
+                text: 'Delete Post',
+                handler: () => {
+                  this.deletePost(post);
+                }
+              },{
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel clicked');
+                }
+              }
+            ]
+          });
+          actionSheet.present();
+}
+
+deletePost(post){
+  firebase.firestore().collection("posts").doc(post.id).delete().then(function() {
+      console.log("Document successfully deleted!");
+      //refresh the page
+      this.appCtrl.getRootNav().setRoot(FeedPage);
+  }).catch(function(error) {
+      console.error("Error removing document: ", error);
+  });
+}
+
+editPost(post){
+  firebase.firestore().collection("posts").doc(post.id).delete().then(function() {
+      console.log("Document successfully deleted!");
+      //refresh the page
+      this.appCtrl.getRootNav().setRoot(FeedPage);
+  }).catch(function(error) {
+      console.error("Error removing document: ", error);
+  });
 }
 
 }
