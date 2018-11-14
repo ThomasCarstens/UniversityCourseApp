@@ -28,6 +28,7 @@ export class CommentsPage {
   user: any[] = [];
   comment_lurk: number;
   askcomment_lurkers : string;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl: ViewController,
@@ -56,10 +57,11 @@ this.loadcomments();
       this.comment_lurk = data.data().comment_lurk || 0;
   });
 
-
+/*
   setTimeout(() => {
   this.CheckNumberVisits();
 }, 1000);
+*/
 }
 
 CheckNumberVisits(){

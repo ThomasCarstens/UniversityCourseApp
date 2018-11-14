@@ -19,7 +19,7 @@
 
     <ion-buttons end>
       <button item-left ion-button icon-only clear (click)="this.popup.HowtoContribute()">
-        <ion-icon name="beer"></ion-icon>
+        <ion-icon name="bonfire"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -57,20 +57,16 @@
 </ion-item-divider>
 </ion-card> -->
 <ng-container *ngFor="let post of posts">
-  <ion-card> <!--*ngIf='this.StudentType == "Tutor" || this.StudentNumber == post.data().owner_email'-->
+  <ion-card> <!--*ngIf='this.usertype == "Tutor" || this.username == post.data().owner_email'-->
 
 
 <!--    <button *ngIf ='this.StudentNumber == post.data().owner_email' ion-button color="danger" (click)="deleteQuestion(i)" item-end >
      Delete </button> -->
 
 
-    <ion-item-divider color="danger" *ngIf="post.data().anonymous==true">
-      Student <!--{{ post.data().owner_name }}-->
-    </ion-item-divider>
-
-    <ion-item-divider color="danger" *ngIf="post.data().anonymous==false">
-      {{ post.data().owner_name }}
-    </ion-item-divider>
+    <ion-item textwrap color="danger">
+      <div  item-left> {{post.data().worksection}} </div>
+    </ion-item>
 
 
     <ion-item text-wrap>
@@ -78,6 +74,17 @@
     </ion-item>
 
     <img [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
+
+  <ion-row class="bottom-bar">
+
+    <ion-item item-end>
+      <div   *ngIf="post.data().anonymous==true">
+        <ion-icon  name="ionitron"></ion-icon> Student </div>
+      <div   *ngIf="post.data().anonymous==false">
+        <ion-icon  name="ionitron"></ion-icon> {{ post.data().owner_name }} </div>
+    </ion-item>
+
+      </ion-row>
 
     <ion-row class="bottom-bar">
       <!--LIKES REMOVED.
@@ -95,7 +102,7 @@
         </button>
       </ion-col>
 
-      <ion-col>
+      <ion-col *ngIf='this.usertype == "Tutor" || this.username == post.data().owner_email'>
         <ion-buttons>
           <button ion-button block icon-left clear small color="danger" (click)="settings(post)">
             <ion-icon name="settings"></ion-icon>

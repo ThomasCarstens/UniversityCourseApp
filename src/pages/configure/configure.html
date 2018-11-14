@@ -21,16 +21,40 @@
 
 
 <ion-content padding>
+  <ion-item>
+    <ion-label>Section of Work</ion-label>
+    <ion-select [(ngModel)]="worksection">
+      <ion-option value="Rectilinear, plane and curvilinear motion">Rectilinear, plane and curvilinear motion</ion-option>
+      <ion-option value="Relative and constrained motion">Relative and constrained motion</ion-option>
+      <ion-option value="Relative and constrained motion">Rotation and absolute motion</ion-option>
+      <ion-option value="Relative and constrained motion">Instantaneous centres of zero velocity</ion-option>
+      <ion-option value="Relative and constrained motion">Relative velocity and acceleration</ion-option>
+      <ion-option value="Relative and constrained motion">Motion relative to rotating axes</ion-option>
+      <ion-option value="Relative and constrained motion">Newton's 2nd Law</ion-option>
+      <ion-option value="Relative and constrained motion">Work, kinetic energy and potential energy</ion-option>
+      <ion-option value="Relative and constrained motion">Power and efficiency</ion-option>
+      <ion-option value="Relative and constrained motion">Linear and angular impulse-momentum and impact</ion-option>
 
-</ion-content>
+      <div>Mass moment of inertia</div>
+      <ion-option value="Relative and constrained motion">Mass moment of inertia</ion-option>
+      <ion-option value="Relative and constrained motion">General equations of motion</ion-option>
+      <ion-option value="Relative and constrained motion">Translation, fixed-axis rotation, general plane motion</ion-option>
+      <ion-option value="Relative and constrained motion">Work, kineticc kenergy and potential energy</ion-option>
+      <ion-option value="Relative and constrained motion">Power and efficiency</ion-option>
+      <ion-option value="Relative and constrained motion">Linear and angular impulse momentum and impact</ion-option>
 
-<ion-footer>
+    </ion-select>
+  </ion-item>
+
   <div class="item profilepic-border" align="center" *ngIf="this.image">
   	<button class="profilebutton" (click)="removePhoto()">
       <ion-icon name="close-circle"></ion-icon>
     </button>
   	<img class="profilepic padding-bottom" [src]="this.image" *ngIf="this.image" (click)="ViewPhoto(post.data().image)">
   </div>
+</ion-content>
+
+<ion-footer>
 
     <ion-row margin class="rowStyle">
       <button ion-button item-left color="danger" clear (click)="addPhoto()">

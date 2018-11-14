@@ -12,8 +12,8 @@ page-login {
 
     .logo{
         font-size: 25vh;
-        margin-top: 50px;
-        margin-bottom: 30px;
+        margin-top: 5px;
+        margin-bottom: 10px;
     }
 
     h1, h6 {
@@ -21,10 +21,14 @@ page-login {
         font-size: 1em;
     }
 
+    .button {
+      font-size: 15px;
+    }
+
     .rowStyle {
         background-color: white;
-        padding-left: 10px;
-        border-radius: 30px;
+        padding-left: 50px;
+        border-radius: 50px;
         margin-top: 10px;
 
         ion-icon {

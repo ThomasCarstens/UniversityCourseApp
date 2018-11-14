@@ -1087,39 +1087,46 @@ alert.present();
 
 
   HowtoContribute(){
+    this.contributecount++
+    firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({  //should make a record of contributecount
+      contributecount: this.contributecount,
+    }, {
+    merge: true
+    }).then((doc) => {
+    }).catch((err) => {
+      console.log(err)
+    })
+    console.log('contributecount at start:', this.contributecount)
     let alert = this.alertCtrl.create({
-      title: 'The 5min Survey',
+      title: 'The 5min Survey on Google Forms',
       subTitle:`
-      <p> There are 7 questions.</p>
-      <p> In this way, you will not be bothered again by popups until the next update.</p>
-      <p> Only your last submission will be recorded.</p>
-      <ul> <li> You might already have filled some of these in. Please do so again. </li></ul>
-
+      <p> Please contribute to making the app better. </p>
+      <p> <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeq2rSdXaumizNbUn7dJAIxXXaNCB3aihFLnYYiEgWB00RUdw/viewform?usp=sf_link"> Survey </a> </p>
+      <p> By doing the survey, you will not be bothered again by popups until the next update.</p>
       `,
       buttons: [
 
-        {
-          text: 'Start',
-          handler: offhand => {
-            this.AboutAnonymity();
-            this.flowinone = 1
-            this.contributecount++
-            firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
-              contributecount: this.contributecount,
-            }, {
-            merge: true
-            }).then((doc) => {
-              console.log(doc)
-            }).catch((err) => {
-              console.log(err)
-            })
-            console.log('flow at start:', this.flowinone)
-            }
-          },
+//        {
+//          text: 'Start',
+//          handler: offhand => {
+//            this.AboutAnonymity();
+//            this.flowinone = 1
+//            }
+//          },
           {
             text: 'Cancel',
             handler: offhand => {
-              //this.AboutAnonymity();
+              this.contributecount--
+              console.log('contributecount at cancel:', this.contributecount)
+              firebase.firestore().collection("feedback").doc(firebase.auth().currentUser.uid).set({
+                contributecount: this.contributecount,
+              }, {
+              merge: true
+              }).then((doc) => {
+              }).catch((err) => {
+                console.log(err)
+              })
+  //            console.log('flow at start:', this.flowinone)
               }
             },
 

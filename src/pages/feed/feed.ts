@@ -95,7 +95,7 @@ firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).ge
 //  console.log(err);
 //})
 
-
+/*
   setTimeout(() => {
 this.SetupOrConfigureFeedbackDoc();
 
@@ -110,8 +110,8 @@ this.SetupOrConfigureFeedbackDoc();
   this.CheckNumberVisits();
 }, 3000);
 }, 3000);
+*/
   }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CodesignPage');

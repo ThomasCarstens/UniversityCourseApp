@@ -21,9 +21,9 @@ import { App } from 'ionic-angular';
 })
 export class ConfigurePage {
   post: any = {};
-  image: string;
-  newimage: string;
+  image: string = '';
   text: string;
+  worksection: string;
 
   constructor( public navCtrl: NavController,
               public navParams: NavParams,
@@ -41,7 +41,9 @@ export class ConfigurePage {
               public viewCtrl: ViewController,
             ) {
               this.post = this.navParams.get("post");
-              this.image = this.navParams.get("post").data().image;
+              if (this.post.data().image){
+                this.image = this.post.data().image;
+              }
               console.log(this.image)
               this.text = this.navParams.get("post").data().text;
               console.log(this.text)
@@ -154,6 +156,7 @@ close(){
   firebase.firestore().collection("posts").doc(post.id).update({
       image: this.image,
       text: this.text,
+      worksection: this.worksection,
   }).then(function() {
       console.log("Document successfully updated!");
   }).catch(function(error) {
