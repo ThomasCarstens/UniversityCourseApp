@@ -48,6 +48,7 @@ export class ConfigurePage {
               this.text = this.navParams.get("post").data().text;
               console.log(this.text)
 
+
   }
 
   ionViewDidLoad() {

@@ -6,7 +6,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ConfigurePage } from '../configure/configure';
 import { PopupsProvider } from '../../providers/popups/popups';
 import { ViewController, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, ModalController, Modal } from 'ionic-angular';
-
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { App } from 'ionic-angular';
 
 @Component({
   selector: 'page-comments',
@@ -34,10 +35,14 @@ export class CommentsPage {
               private viewCtrl: ViewController,
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
+              private actionSheetCtrl: ActionSheetController,
               private camera: Camera,
               private alertCtrl: AlertController,
               //public configure: ConfigurePage,
-              public popup: PopupsProvider) {
+              public popup: PopupsProvider,
+              private photoViewer: PhotoViewer,
+              public appCtrl: App
+            ) {
 
 
 this.loadcomments();
@@ -223,13 +228,62 @@ CheckNumberVisits(){
                           })
 
                         }
-  addPhoto() {
+                        addPhoto() {
 
-                          this.launchCamera();
-
+                          const actionSheet = this.actionSheetCtrl.create({
+                                    title: 'Adding a Photo',
+                                    buttons: [
+                                      {
+                                        text: 'Use Camera',
+                                        role: 'destructive',
+                                        handler: () => {
+                                          this.launchCamera();
+                                          console.log('Camera clicked');
+                                        }
+                                      },{
+                                        text: 'Load from Library',
+                                        handler: () => {
+                                          //this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+                                          this.openLibrary();
+                                          console.log('Library clicked');
+                                        }
+                                      },{
+                                        text: 'Cancel',
+                                        role: 'cancel',
+                                        handler: () => {
+                                          console.log('Cancel clicked');
+                                        }
+                                      }
+                                    ]
+                                  });
+                                  actionSheet.present();
                         }
 
-  launchCamera() {
+                        openLibrary() {
+                          let options: CameraOptions = {
+                            quality: 100,
+                            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+                            destinationType: this.camera.DestinationType.DATA_URL,
+                            encodingType: this.camera.EncodingType.PNG,
+                            mediaType: this.camera.MediaType.PICTURE,
+                            correctOrientation: true,
+                            targetHeight: 512,
+                            targetWidth: 512,
+                            allowEdit: true
+                          }
+
+                          this.camera.getPicture(options).then((base64Image) => {
+                            console.log(base64Image);
+
+                            this.image = "data:image/png;base64," + base64Image;
+
+
+                          }).catch((err) => {
+                            console.log(err)
+                          })
+                        }
+
+                        launchCamera() {
                           let options: CameraOptions = {
                             quality: 100,
                             sourceType: this.camera.PictureSourceType.CAMERA,
@@ -300,4 +354,14 @@ CheckNumberVisits(){
 
                         }
 
+  ViewPhoto(url: string) {
+    this.photoViewer.show(url, '', {share: true});
+  }
+
+  removePhoto() {
+    //very ugly way of doing it, because text erased.
+    //this.appCtrl.getRootNav().setRoot(CommentsPage);
+    this.image=null;
+    console.log('remove CommentsPagePic')
+  }
 }

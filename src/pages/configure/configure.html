@@ -6,8 +6,10 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="danger">
+    <div class="wrapper">
     <ion-title>Configure Post</ion-title>
+    </div>
 
     <ion-buttons end>
       <button ion-button icon-only clear (click)="close()">
@@ -22,30 +24,43 @@
 
 <ion-content padding>
   <ion-item>
-    <ion-label>Section of Work</ion-label>
+    <ion-label>Kinetics or Kinematics</ion-label>
+  <ion-select [(ngModel)]="kine_">
+      <ion-option value="Kinetics">Kinetics</ion-option>
+      <ion-option value="Kinematics">Kinematics</ion-option>
+    </ion-select>
+</ion-item>
+
+<ion-item>
+  <ion-label>Particles or Rigid Body</ion-label>
+<ion-select [(ngModel)]="physical">
+    <ion-option value="Particles">Particles</ion-option>
+    <ion-option value="Rigid Body">Rigid Body</ion-option>
+  </ion-select>
+</ion-item>
+
+<ion-item *ngIf='this.kine_ && this.physical'>
+    <ion-label>Choose Section of Work</ion-label>
     <ion-select [(ngModel)]="worksection">
-      <ion-option value="Rectilinear, plane and curvilinear motion">Rectilinear, plane and curvilinear motion</ion-option>
-      <ion-option value="Relative and constrained motion">Relative and constrained motion</ion-option>
-      <ion-option value="Relative and constrained motion">Rotation and absolute motion</ion-option>
-      <ion-option value="Relative and constrained motion">Instantaneous centres of zero velocity</ion-option>
-      <ion-option value="Relative and constrained motion">Relative velocity and acceleration</ion-option>
-      <ion-option value="Relative and constrained motion">Motion relative to rotating axes</ion-option>
-      <ion-option value="Relative and constrained motion">Newton's 2nd Law</ion-option>
-      <ion-option value="Relative and constrained motion">Work, kinetic energy and potential energy</ion-option>
-      <ion-option value="Relative and constrained motion">Power and efficiency</ion-option>
-      <ion-option value="Relative and constrained motion">Linear and angular impulse-momentum and impact</ion-option>
-
-      <div>Mass moment of inertia</div>
-      <ion-option value="Relative and constrained motion">Mass moment of inertia</ion-option>
-      <ion-option value="Relative and constrained motion">General equations of motion</ion-option>
-      <ion-option value="Relative and constrained motion">Translation, fixed-axis rotation, general plane motion</ion-option>
-      <ion-option value="Relative and constrained motion">Work, kineticc kenergy and potential energy</ion-option>
-      <ion-option value="Relative and constrained motion">Power and efficiency</ion-option>
-      <ion-option value="Relative and constrained motion">Linear and angular impulse momentum and impact</ion-option>
-
+      <ion-option textwrap *ngIf='this.kine_=="Kinematics" && this.physical=="Particles"' value="Rectilinear, plane and curvilinear motion">Rectilinear, plane and curvilinear motion</ion-option>
+      <ion-option textwrap *ngIf='this.kine_=="Kinematics" && this.physical=="Particles"' value="Relative and constrained motion">Relative and constrained motion</ion-option>
+      <ion-option textwrap *ngIf='this.kine_=="Kinematics" && this.physical=="Rigid Body"' value="Rotation and absolute motion">Rotation and absolute motion</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinematics" && this.physical=="Rigid Body"' value="Instantaneous centres of zero velocity">Instantaneous centres of zero velocity</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinematics" && this.physical=="Rigid Body"' value="Relative velocity and acceleration">Relative velocity and acceleration</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinematics" && this.physical=="Rigid Body"' value="Motion relative to rotating axes">Motion relative to rotating axes</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Particles"' value="Newton's 2nd Law">Newton's 2nd Law</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Particles"' value="Work, kinetic energy and potential energy">Work, kinetic energy and potential energy</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Particles"' value="Power and efficiency">Power and efficiency</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Particles"' value="Linear and angular impulse-momentum and impact">Linear and angular impulse-momentum and impact</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="Mass moment of inertia">Mass moment of inertia</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="General equations of motion">General equations of motion</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="Translation, fixed-axis rotation, general plane motion">Translation, fixed-axis rotation, general plane motion</ion-option>
+      <ion-option text-wrap *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="Work, kinetic energy and potential energy">Work, kinetic energy and potential energy</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="Power and efficiency">Power and efficiency</ion-option>
+      <ion-option *ngIf='this.kine_=="Kinetics" && this.physical=="Rigid Body"' value="Linear and angular impulse momentum and impact">Linear and angular impulse momentum and impact</ion-option>
     </ion-select>
   </ion-item>
-
+  <h6>Edit Picture</h6>
   <div class="item profilepic-border" align="center" *ngIf="this.image">
   	<button class="profilebutton" (click)="removePhoto()">
       <ion-icon name="close-circle"></ion-icon>
@@ -55,7 +70,7 @@
 </ion-content>
 
 <ion-footer>
-
+    <h6>   Edit Text</h6>
     <ion-row margin class="rowStyle">
       <button ion-button item-left color="danger" clear (click)="addPhoto()">
         <ion-icon name="images"></ion-icon>

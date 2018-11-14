@@ -26,7 +26,7 @@
 
 <ion-content #content>
 
-<img [src]="post.data().image" *ngIf="post.data().image">
+<img [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
 
 
 <ion-list>
@@ -40,7 +40,7 @@
             <span class="msg-name" *ngIf='comment.data().usertype !== "Tutor"'> Student who posted </span>
             <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
             <p text-wrap>{{ comment.data().text }}</p>
-            <img [src]="comment.data().image" *ngIf="comment.data().image">
+            <img [src]="comment.data().image" *ngIf="comment.data().image" (click)="ViewPhoto(comment.data().image)">
           </div>
         </div>
 <!-- if other student: NOT my post and NOT tutor and NOT NAME of poster  -->
@@ -49,7 +49,7 @@
         <span class="msg-name"> Helpful Student </span>
         <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
         <p text-wrap>{{ comment.data().text }}</p>
-        <img [src]="comment.data().image" *ngIf="comment.data().image">
+        <img [src]="comment.data().image" *ngIf="comment.data().image" (click)="ViewPhoto(comment.data().image)">
       </div>
     </div>
   <!-- if tutor: NOT my post and NOT poster but IS tutor  -->
@@ -58,7 +58,7 @@
           <span class="msg-name"> {{ comment.data().owner_name }} - Tutor </span>
           <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
           <p text-wrap>{{ comment.data().text }}</p>
-          <img [src]="comment.data().image" *ngIf="comment.data().image">
+          <img [src]="comment.data().image" *ngIf="comment.data().image" (click)="ViewPhoto(comment.data().image)">
         </div>
       </div>
 
@@ -68,7 +68,7 @@
         <span class="msg-name"> Me </span>
         <span class="msg-date"><em> {{ ago(comment.data().created.toDate()) }} ago </em></span>
         <p text-wrap>{{ comment.data().text }}</p>
-        <img [src]="comment.data().image" *ngIf="comment.data().image">
+        <img [src]="comment.data().image" *ngIf="comment.data().image" (click)="ViewPhoto(comment.data().image)">
       </div>
     </div>
 
@@ -81,11 +81,12 @@
 
 <ion-footer>
 
-  <ion-row margin *ngIf="image">
-    <ion-card class="round-corners">
-      <img [src]="image" class="round-corners">
-    </ion-card>
-  </ion-row>
+  <div class="item profilepic-border" align="center" *ngIf="image">
+  	<button class="profilebutton" (click)="removePhoto()">
+      <ion-icon name="close-circle"></ion-icon>
+    </button>
+  	<img class="profilepic padding-bottom" [src]="image">
+  </div>
 
     <ion-row margin class="rowStyle">
       <button ion-button item-left color="danger" clear (click)="addPhoto()">

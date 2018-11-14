@@ -469,7 +469,6 @@ PostSure(){
 
 
   ViewPhoto(url: string) {
-    //this.image =
     this.photoViewer.show(url, '', {share: true});
   }
 
@@ -684,6 +683,12 @@ settings(post){
             title: 'Post Settings',
             buttons: [
               {
+                text: 'View Comments',
+                handler: () => {
+                  this.comment(post);
+                }
+              },
+              {
                 text: 'Edit Post',
                 handler: () => {
                   this.editPost(post);
@@ -718,7 +723,8 @@ deletePost(post){
 
 removePhoto() {
   //very ugly way of doing it, because text erased.
-  this.appCtrl.getRootNav().setRoot(FeedPage);
-  console.log('remove Pic')
+  //this.appCtrl.getRootNav().setRoot(FeedPage);
+  this.image=null;
+  console.log('remove FeedPic')
 }
 }
