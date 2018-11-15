@@ -44,6 +44,7 @@ export class FeedPage {
   student_must_contribute: number;
   force_contribute: number;
   anonymous: boolean;
+  resolve: number;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -323,6 +324,8 @@ CheckNumberVisits(){
       }).catch((err) => {
         console.log(err)
       })
+
+      eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])');
   }
 
   loadMorePosts(event) {
@@ -420,6 +423,7 @@ PostSure(){
       owner_name: firebase.auth().currentUser.displayName,
       owner_email: firebase.auth().currentUser.email,
       anonymous: if_anonymous,
+      resolve: 0,
     }).then(async (doc) => {
       console.log(doc)
 
@@ -686,6 +690,12 @@ settings(post){
                 text: 'View Comments',
                 handler: () => {
                   this.comment(post);
+                }
+              },
+              {
+                text: 'Resolve Post',
+                handler: () => {
+                  this.popup.ResolveSure(post);
                 }
               },
               {

@@ -14,7 +14,7 @@ import { PopupsProvider } from '../../providers/popups/popups';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { App } from 'ionic-angular';
 
-@IonicPage()
+//@IonicPage()
 @Component({
   selector: 'page-configure',
   templateUrl: 'configure.html',

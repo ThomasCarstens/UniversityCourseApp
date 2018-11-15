@@ -44,7 +44,6 @@ export class CommentsPage {
               public appCtrl: App
             ) {
 
-
 this.loadcomments();
 //Current User details
   firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get().then((data) => {
@@ -124,7 +123,7 @@ CheckNumberVisits(){
 
   loadcomments(){
     this.post = this.navParams.get("post");
-    console.log(this.post)
+    console.log(this.post.id)
     console.log('Posting Student is:', this.post.owner_name);
 
     firebase.firestore().collection("comments")
@@ -149,8 +148,8 @@ CheckNumberVisits(){
     return moment.duration(difference).humanize();
   }
 
-  resolve(){
-  this.popup.ResolveSure();
+  resolve(post){
+  this.popup.ResolveSure(post);
   }
 
   PrepareComment() {

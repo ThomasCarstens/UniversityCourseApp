@@ -11,7 +11,7 @@ import { AppVersion } from '@ionic-native/app-version';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+//@IonicPage()
 @Component({
   selector: 'page-updater',
   templateUrl: 'updater.html',

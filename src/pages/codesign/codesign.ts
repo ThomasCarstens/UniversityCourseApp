@@ -14,7 +14,7 @@ import { PopupsProvider } from '../../providers/popups/popups';
 //import { NavigationProvider } from '../../providers/navigation/navigation';
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
-@IonicPage()
+//@IonicPage()
 @Component({
   selector: 'page-codesign',
   templateUrl: 'codesign.html',

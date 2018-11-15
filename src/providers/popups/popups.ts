@@ -39,6 +39,7 @@ export class PopupsProvider {
   contributecount: number;
   question_type: number;
   student_must_contribute: number;
+  resolve: number;
 
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
@@ -914,7 +915,7 @@ PostFeedback() {
   alert.present();
 }
 
-  ResolveSure(){
+  ResolveSure(post){
     let alert = this.alertCtrl.create({
       title: 'Are you sure you want to resolve this post?',
       message: 'This action cannot be undone.',
@@ -930,8 +931,12 @@ PostFeedback() {
           text: 'Sure',
           handler: () => {
             console.log('Sure clicked');
-//            if (this.experience=="1"){
-              this.ResolveFeedback();
+              this.resolve = 1;
+              firebase.firestore().collection("posts").doc(post.id).update({
+                resolve: 1,
+              }).then(async (doc) => {
+                console.log(doc)
+              this.ResolveFeedback(); })
 //            } else {this.shouldn't be here.()}
           }
         }
