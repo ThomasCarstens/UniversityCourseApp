@@ -24,6 +24,7 @@ import firebase from 'firebase';
 import { config } from './app.firebaseconfig';
 
 import { UserProvider } from '../providers/user/user';
+import { KatexDirective } from '../directives/katex/katex'
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
@@ -37,6 +38,7 @@ import { Autosize } from '../components/autosize';
 import { PopupsProvider } from '../providers/popups/popups';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { KatexModule } from 'ng-katex';
 
 firebase.initializeApp(config);
 
@@ -55,7 +57,8 @@ firebase.firestore().settings({
     CodesignPage,
     Autosize,
     ConfigurePage,
-    PasswordresetPage
+    PasswordresetPage,
+    KatexDirective
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ firebase.firestore().settings({
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
+    KatexModule
     //AngularFireModule
 
   ],

@@ -8,7 +8,11 @@ page-feed {
   height: 100%;
   text-align: center;
 }
-
+.image{
+  max-width: 400px;
+  text-align: center;
+  margin: auto;
+}
 .fineprint {
   font-size: 10px;
   text-align: center;
@@ -71,5 +75,23 @@ page-feed {
       background-color: map-get($colors , semi-light);
       //color:#ffffff;
     }
+    .katex-display > .katex {
+      //display: flex;
+      //white-space: normal;
+      width: 100%;
+      //display: inline-flex;
+      overflow-x: scroll;
+//      text-align: center;
+      //float: left;
+//      display:table;
+//      text-align: center;
+//      white-space: normal;
 
+    }
+    .katex {
+      font: normal 1.21em KaTeX_Main, Times New Roman, serif;
+      line-height: 1.2;
+      white-space: normal;
+      text-indent: 0;
+    }
 }

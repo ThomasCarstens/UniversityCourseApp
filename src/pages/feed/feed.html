@@ -22,6 +22,7 @@
 
 <ion-content overflow-scroll=true>
 
+
   <p class="fineprint"><button class="fineprint" (click)="gotoCodesign()">
   Contact Developer
   </button> || <a target="_blank" href="http://htmlpreview.github.io/?https://github.com/ThomasCarstens/uct_incubator/blob/master/privacypolicy"> Private Policy </a> </p>
@@ -66,9 +67,9 @@
 
             </ion-item>
 
-                <ion-item text-wrap>
+                <div class="katex-display" text-wrap [Katex]="post.data().text">
                   {{ post.data().text }}
-                </ion-item>
+                </div>
 
                 <img [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
 
@@ -85,6 +86,13 @@
                       <ion-icon name="settings"></ion-icon>
                     </button>
                   </ion-col>
+
+                  <ion-col>
+                    <button ion-button block icon-left clear small color="danger" class="border-right" (click)="like(post)">
+                      <ion-icon name="thumbs-up"></ion-icon>
+                      <small>{{ post.data().likesCount || 0 }} Likes</small>
+                    </button>
+                  </ion-col> 
 
                 </ion-row>
 
@@ -124,11 +132,11 @@
 
               </ion-item>
 
-                  <ion-item text-wrap>
+                  <ion-item class="katex-display" text-wrap [Katex]="post.data().text">
                     {{ post.data().text }}
                   </ion-item>
 
-                  <img [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
+                  <img class="image" [src]="post.data().image" *ngIf="post.data().image" (click)="ViewPhoto(post.data().image)">
 
                   <ion-row class="bottom-bar">
 
@@ -183,13 +191,14 @@
     </button>
   	<img class="profilepic padding-bottom" [src]="image">
   </div>
+    <div> <a target="_blank" href="https://katex.org/docs/supported.html"> How to type Latex equations </a> </div>
+    <ion-item class= "katex-display" autosize text-wrap [Katex]="text"></ion-item>
 
 
     <ion-row margin class="rowStyle">
       <button ion-button item-left color="danger" clear (click)="addPhoto()">
         <ion-icon name="images"></ion-icon>
       </button>
-
 
       <ion-textarea rows="1" name="dummyText"  type="text" placeholder="Say something..." [(ngModel)]="text" autosize></ion-textarea>
 

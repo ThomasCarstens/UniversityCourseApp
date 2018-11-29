@@ -12,14 +12,14 @@ import { Firebase } from '@ionic-native/firebase';
 import { PopupsProvider } from '../../providers/popups/popups';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { App } from 'ionic-angular';
-
+import { KatexOptions } from 'ng-katex';
 
 //import * as admin from 'firebase-admin';
 //import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'page-feed',
-  templateUrl: 'feed.html',
+  templateUrl: 'feed.html'
 })
 export class FeedPage {
  dummyText: string = `Type a longer text to see how this expands!`;
@@ -45,6 +45,11 @@ export class FeedPage {
   force_contribute: number;
   anonymous: boolean;
   resolve: number;
+  equation: string = '\sum_{i=1}^nx_i';
+  options: KatexOptions = {
+    displayMode: true,
+  };
+  //@Input('Katex') KatexInput: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -58,7 +63,8 @@ export class FeedPage {
               private firebaseCordova: Firebase,
               public popup: PopupsProvider,
               private photoViewer: PhotoViewer,
-              public appCtrl: App
+              public appCtrl: App,
+              //private el: ElementRef
               //public userservice: UserProvider,
             ) {
 
@@ -113,6 +119,12 @@ this.SetupOrConfigureFeedbackDoc();
 }, 3000);
 */
   }
+
+  //ngOnChanges() {
+  //  katex.render(this.KatexInput, this.el.nativeElement, {
+  //    displayMode: true
+  //  });
+  //}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CodesignPage');
@@ -325,7 +337,7 @@ CheckNumberVisits(){
         console.log(err)
       })
 
-      eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])');
+      //eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])');
   }
 
   loadMorePosts(event) {
